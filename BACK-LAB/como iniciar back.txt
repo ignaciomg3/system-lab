@@ -1,0 +1,21 @@
+Cómo iniciar el backend
+======================
+
+1. Instala las dependencias:
+   npm install
+
+2. Crea un archivo .env en la carpeta BACK-LAB con las variables de entorno necesarias (por ejemplo, la URL de la base de datos MongoDB).
+
+3. Para desarrollo, ejecuta:
+   npm run dev
+   (Esto usará nodemon para recargar el servidor automáticamente ante cambios.)
+
+4. Para producción, ejecuta:
+   npm start
+
+5. El backend estará disponible normalmente en http://localhost:3000
+
+6. (Opcional) Accede a la documentación Swagger en:
+   http://localhost:3000/api-docs
+
+Asegúrate de tener Node.js y MongoDB instalados y en funcionamiento.

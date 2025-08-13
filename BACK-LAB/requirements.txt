@@ -1,0 +1,13 @@
+bcryptjs
+cors
+dotenv
+express
+helmet
+jsonwebtoken
+mongoose
+morgan
+open
+swagger-jsdoc
+swagger-ui-express
+# Development only:
+# nodemon
