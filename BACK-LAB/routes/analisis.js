@@ -332,4 +332,132 @@ router.delete('/:nro_informe', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/analisis/porcentajes-clientes:
+ *   get:
+ *     summary: Obtener porcentajes de análisis según cliente
+ *     tags: [Análisis]
+ *     responses:
+ *       200:
+ *         description: Porcentajes por cliente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ */
+
+
+router.get('/clientes/porcentaje', async (req, res) => {
+  try {
+    const result = await Analisis.aggregate([
+      {
+        $group: {
+          _id: "$solicitante",
+          total: { $sum: 1 }
+        }
+      },
+      {
+        $setWindowFields: {
+          output: {
+            totalGeneral: {
+              $sum: "$total",
+              window: { documents: ["unbounded", "unbounded"] }
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          cliente: "$_id",
+          total: 1,
+          porcentaje: {
+            $round: [
+              { $multiply: [{ $divide: ["$total", "$totalGeneral"] }, 100] },
+              2
+            ]
+          },
+          _id: 0
+        }
+      }
+    ]);
+
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+
+/**
+ * @swagger
+ * /analisis/porcentaje:
+ *   get:
+ *     summary: Obtener porcentaje de análisis por solicitante
+ *     description: Devuelve el total de análisis y el porcentaje de cada solicitante.
+ *     responses:
+ *       200:
+ *         description: Lista de solicitantes con su porcentaje
+ */
+router.get("/analisis/porcentaje", async (req, res) => {
+  try {
+    const result = await Analisis.aggregate([
+      {
+        $group: {
+          _id: "$solicitante",
+          total: { $sum: 1 }
+        }
+      },
+      {
+        $setWindowFields: {
+          output: {
+            totalGeneral: {
+              $sum: "$total",
+              window: { documents: ["unbounded", "unbounded"] }
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          solicitante: "$_id",
+          total: 1,
+          porcentaje: {
+            $concat: [
+              { $toString: { $round: [{ $multiply: [{ $divide: ["$total", "$totalGeneral"] }, 100] }, 2] } },
+              "%"
+            ]
+          },
+          _id: 0
+        }
+      }
+    ]);
+
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = router;
