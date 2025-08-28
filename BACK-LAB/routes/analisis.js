@@ -182,38 +182,14 @@ router.get('/:nro_informe', async (req, res) => {
  *       400:
  *         description: Error de validación
  */
+// Crear un nuevo análisis (POST)
 router.post('/', async (req, res) => {
   try {
-    const analisis = new Analisis(req.body);
-    const savedAnalisis = await analisis.save();
-    
-    res.status(201).json({
-      success: true,
-      message: 'Análisis creado exitosamente',
-      data: savedAnalisis
-    });
+    const nuevoAnalisis = new Analisis(req.body);
+    const resultado = await nuevoAnalisis.save();
+    res.status(201).json({ success: true, data: resultado });
   } catch (error) {
-    if (error.code === 11000) {
-      return res.status(400).json({
-        success: false,
-        error: 'El número de análisis ya existe'
-      });
-    }
-    
-    if (error.name === 'ValidationError') {
-      const validationErrors = Object.values(error.errors).map(err => err.message);
-      return res.status(400).json({
-        success: false,
-        error: 'Errores de validación',
-        details: validationErrors
-      });
-    }
-
-    res.status(500).json({
-      success: false,
-      error: 'Error al crear el análisis',
-      details: error.message
-    });
+    res.status(400).json({ success: false, error: error.message });
   }
 });
 
@@ -245,14 +221,14 @@ router.post('/', async (req, res) => {
 router.put('/:nro_informe', async (req, res) => {
   try {
     const nro_informe = parseInt(req.params.nro_informe);
-    
+
     if (isNaN(nro_informe)) {
       return res.status(400).json({
         success: false,
         error: 'El número de informe debe ser un número válido'
       });
     }
-    
+
     const analisis = await Analisis.findOneAndUpdate(
       { nro_informe: nro_informe },
       req.body,
@@ -292,7 +268,7 @@ router.put('/:nro_informe', async (req, res) => {
  *         required: true
  *         schema:
  *           type: number
- *         description: Número del informe
+ *         description: Número del informe a eliminar
  *     responses:
  *       200:
  *         description: Análisis eliminado exitosamente
@@ -302,14 +278,14 @@ router.put('/:nro_informe', async (req, res) => {
 router.delete('/:nro_informe', async (req, res) => {
   try {
     const nro_informe = parseInt(req.params.nro_informe);
-    
+
     if (isNaN(nro_informe)) {
       return res.status(400).json({
         success: false,
         error: 'El número de informe debe ser un número válido'
       });
     }
-    
+
     const analisis = await Analisis.findOneAndDelete({ nro_informe: nro_informe });
 
     if (!analisis) {
