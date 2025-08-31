@@ -1,5 +1,6 @@
 const express = require('express');
 const Analisis = require('../models/Analisis');
+const Muestras = require('../models/Muestras'); // Asegúrate de tener el modelo
 const router = express.Router();
 
 /**
@@ -420,19 +421,6 @@ router.get("/analisis/porcentaje", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

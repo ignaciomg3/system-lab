@@ -11,7 +11,7 @@ const { specs, swaggerUi, swaggerOptions } = require('./config/swagger');
 // Importar rutas
 const userRoutes = require('./routes/users');
 const analisisRoutes = require('./routes/analisis');
-const resultadosRoutes = require('./routes/resultados');
+
 const muestrasRoutes = require('./routes/muestras');
 const authRoutes = require('./routes/auth');
 
@@ -62,7 +62,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, swaggerOptions));
 app.use('/api', authRoutes); // Login
 app.use('/api/users', userRoutes);
 app.use('/api/analisis', analisisRoutes);
-app.use('/api/resultados', resultadosRoutes);
 app.use('/api/muestras', muestrasRoutes);
 
 // Middleware para rutas no encontradas

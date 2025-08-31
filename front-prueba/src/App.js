@@ -95,6 +95,62 @@ function App() {
     }
   };
 
+  
+
+  // Opción 6: Obtener muestra por nro_informe
+  const obtenerMuestraPorNroInforme = async () => {
+    const nro_informe = prompt('Ingrese el número de informe:');
+    if (!nro_informe) {
+      setOutput('❌ Debe ingresar un número de informe');
+      return;
+    }
+    try {
+      const res = await fetch(`http://localhost:3000/api/muestras?nro_informe=${nro_informe}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.count === 0) {
+          setOutput('No se encontró ninguna muestra con ese número de informe.');
+        } else {
+          setOutput(JSON.stringify(data.data, null, 2));
+        }
+      } else {
+        setOutput('❌ Error al obtener la muestra');
+      }
+    } catch (error) {
+      setOutput('❌ Error al obtener la muestra');
+    }
+  };
+
+  // Opción 7: Registrar Muestra
+  const registrarMuestra = async () => {
+    // Ejemplo de datos, puedes usar un formulario para obtenerlos
+    const muestra = {
+      nro_informe: 6178,
+      muestra_nombre: "pozo",
+      parametros: {
+        pH: { valor: 7.6, unidad: null },
+        hierro_total: { valor: 0.4, unidad: "mg/l" },
+        calcio: { valor: 144, unidad: "mg/l" },
+        magnesio: { valor: 7.2, unidad: "mg/l" },
+        arsenico: { valor: 0.05, unidad: "mg/l" }
+      }
+    };
+    try {
+      const res = await fetch('http://localhost:3000/api/muestra', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(muestra)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setOutput('✅ Muestra registrada:\n' + JSON.stringify(data.data, null, 2));
+      } else {
+        setOutput('❌ Error al registrar la muestra');
+      }
+    } catch (error) {
+      setOutput('❌ Error al registrar la muestra');
+    }
+  };
   return (
     <div className="App">
       <h2>***************** MENÚ *****************</h2>
@@ -117,6 +173,14 @@ function App() {
         <br /><br />
         <button onClick={mostrarGraficoEstadistico}>
           5) Mostrar gráfico estadístico
+        </button>
+        <br /><br />
+        <button onClick={obtenerMuestraPorNroInforme}>
+          6) Obtener muestra por nro_informe
+        </button>
+        <br /><br />
+        <button onClick={registrarMuestra}>
+          7) Registrar Muestra
         </button>
       </div>
       {output && (
