@@ -1,0 +1,121 @@
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+}
+
+/* === Form Container === */
+.new-request-form {
+  background: #fff;
+  max-width: 440px;
+  margin: 60px auto 0;
+  padding: 40px 32px 32px;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(25, 118, 210, 0.15);
+  text-align: center;
+  animation: fadeIn 0.8s;
+}
+
+/* === Animations === */
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(40px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* === Titles === */
+h2 {
+  margin-bottom: 28px;
+  color: #1976d2;
+  font-size: 1.7rem;
+  letter-spacing: 1px;
+}
+
+/* === Form Elements === */
+.form-group {
+  margin-bottom: 22px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #1976d2;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="email"],
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 2px;
+  font-size: 1rem;
+  border: 1.5px solid #90caf9;
+  border-radius: 8px;
+  background: #f7fbff;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+select:focus,
+textarea:focus {
+  border-color: #1976d2;
+  background: #e3f2fd;
+}
+
+/* === Submit Button === */
+button[type="submit"] {
+  width: 180px;
+  padding: 14px 0;
+  margin-top: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #fff;
+  background: linear-gradient(90deg, #1976d2 60%, #42a5f5 100%);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 2px 12px rgba(25, 118, 210, 0.10);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+button[type="submit"]:hover,
+button[type="submit"]:focus {
+  background: linear-gradient(90deg, #1565c0 60%, #64b5f6 100%);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 6px 24px rgba(25, 118, 210, 0.18);
+}
+
+/* === Back Button === */
+.back-home-btn {
+  display: block;
+  width: 160px;
+  padding: 10px 0;
+  margin: 18px auto 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1976d2;
+  background: #fff;
+  border: 2px solid #1976d2;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.back-home-btn:hover,
+.back-home-btn:focus {
+  background: #1976d2;
+  color: #fff;
+}

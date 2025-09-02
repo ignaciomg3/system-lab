@@ -1,0 +1,17 @@
+<div class="pull-request-form">
+  <h2>🔎 Buscar Solicitud</h2>
+  <form (ngSubmit)="searchRequest()">
+    <div class="form-group">
+      <label for="busqueda">Buscar por nombre, email o ID:</label>
+      <input id="busqueda" type="text" [(ngModel)]="criteria" name="criterio" placeholder="Ingrese criterio de búsqueda" />
+    </div>
+    <button type="submit">Buscar</button>
+  </form>
+
+  <button routerLink="/home" class="back-home-btn">Atras</button>
+
+  <div *ngIf="result" class="result-box">
+    <h3>Resultado:</h3>
+    <pre>{{ result | json }}</pre>
+  </div>
+</div>

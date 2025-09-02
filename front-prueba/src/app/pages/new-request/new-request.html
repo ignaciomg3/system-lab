@@ -1,0 +1,44 @@
+<div class="new-request-form">
+  <h2>📝 Crear Nueva Solicitud</h2>
+  <form (ngSubmit)="createRequest()">
+    
+    <!-- Fecha -->
+    <div class="form-group">
+      <label for="fecha">Fecha:</label>
+      <input id="fecha" type="date" [(ngModel)]="request.fecha" name="fecha" required />
+    </div>
+
+    <!-- Número / ID -->
+    <div class="form-group">
+      <label for="numero">Número (ID):</label>
+      <input id="numero" type="number" [(ngModel)]="request.numero" name="numero" required />
+    </div>
+
+    <!-- Solicitante -->
+    <div class="form-group">
+      <label for="solicitante">Solicitante (Empresa):</label>
+      <input id="solicitante" type="text" [(ngModel)]="request.solicitante" name="solicitante" required />
+    </div>
+
+    <!-- Muestra -->
+    <div class="form-group">
+      <label for="muestra">Muestra:</label>
+      <input id="muestra" type="text" [(ngModel)]="request.muestra" name="muestra" required />
+    </div>
+
+    <!-- Análisis solicitado -->
+    <div class="form-group">
+      <label>Análisis solicitado:</label>
+      <div *ngFor="let analisis of availableAnalisis">
+        <input type="checkbox" 
+               [value]="analisis"
+               (change)="toggleAnalisis(analisis, $event)" />
+        {{ analisis }}
+      </div>
+    </div>
+
+    <button type="submit">Crear Solicitud</button>
+  </form>
+
+  <button routerLink="/home" class="back-home-btn">🏠 Volver a Home</button>
+</div>
