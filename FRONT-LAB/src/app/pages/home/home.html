@@ -1,8 +1,105 @@
-<div class="main-container">
-  <h1>Bienvenido a -Empresa de Rami-</h1>
-  <nav class="nav-buttons">
-    <button routerLink="/new-request">📝 Crear nuevo</button>
-    <button routerLink="/edit-request">✏️ Editar</button>
-    <button routerLink="/pull-request">🔍 Consultar</button>
-  </nav>
+<div class="dashboard-container">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <h1>📊 Dashboard - Empresa de Rami</h1>
+    <p class="welcome-text">Bienvenido al panel de control</p>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando estadísticas...</p>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div *ngIf="!loading && statistics" class="stats-container">
+    
+    <!-- Metric Cards -->
+    <div class="metrics-grid">
+      <div class="metric-card total">
+        <div class="metric-icon">📋</div>
+        <div class="metric-content">
+          <h3>{{ statistics.totalRequests }}</h3>
+          <p>Total de Solicitudes</p>
+        </div>
+      </div>
+
+      <div class="metric-card pending">
+        <div class="metric-icon">⏳</div>
+        <div class="metric-content">
+          <h3>{{ statistics.pendingRequests }}</h3>
+          <p>Pendientes</p>
+        </div>
+      </div>
+
+      <div class="metric-card completed">
+        <div class="metric-icon">✅</div>
+        <div class="metric-content">
+          <h3>{{ statistics.completedRequests }}</h3>
+          <p>Completadas</p>
+        </div>
+      </div>
+
+      <div class="metric-card rejected">
+        <div class="metric-icon">❌</div>
+        <div class="metric-content">
+          <h3>{{ statistics.rejectedRequests }}</h3>
+          <p>Rechazadas</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Growth Indicator -->
+    <div class="growth-card">
+      <h3>📈 Crecimiento Mensual</h3>
+      <div class="growth-value">
+        <span class="growth-number">+{{ statistics.monthlyGrowth }}%</span>
+        <span class="growth-text">vs. mes anterior</span>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <h3>🚀 Acciones Rápidas</h3>
+      <div class="action-buttons">
+        <button routerLink="/new-request" class="action-btn primary">
+          <span class="btn-icon">📝</span>
+          <span class="btn-text">Nueva Solicitud</span>
+        </button>
+        <button routerLink="/edit-request" class="action-btn secondary">
+          <span class="btn-icon">✏️</span>
+          <span class="btn-text">Editar Solicitud</span>
+        </button>
+        <button routerLink="/pull-request" class="action-btn tertiary">
+          <span class="btn-icon">🔍</span>
+          <span class="btn-text">Consultar Estado</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="activity-section">
+      <h3>📋 Actividad Reciente</h3>
+      <div class="activity-list">
+        <div 
+          *ngFor="let activity of statistics.recentActivity" 
+          class="activity-item"
+        >
+          <div 
+            class="activity-icon" 
+            [style.background-color]="getStatusColor(activity.type)"
+          >
+            {{ getStatusIcon(activity.type) }}
+          </div>
+          <div class="activity-content">
+            <p class="activity-description">{{ activity.description }}</p>
+            <div class="activity-meta">
+              <span class="activity-user">{{ activity.user }}</span>
+              <span class="activity-date">{{ activity.date | date:'short' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

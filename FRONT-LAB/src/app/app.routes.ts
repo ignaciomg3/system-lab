@@ -5,6 +5,7 @@ import { EditRequest } from './pages/edit-request/edit-request';
 import { PullRequest } from './pages/pull-request/pull-request';
 
 export const routes: Routes = [
+  { path: '', redirectTo: '/home', pathMatch: 'full' }, // ← Ruta por defecto
   { path: 'home', component: Home },
   { path: 'new-request', component: NewRequest },
   { path: 'edit-request', component: EditRequest },
