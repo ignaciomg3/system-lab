@@ -41,7 +41,7 @@ function mostrarMenu() {
         setTimeout(mostrarMenu, 2000);
         break;
       case '0':
-        console.log('Saliendo...');
+        console.log('Saliendoo...');
         rl.close();
         break;
       default:
