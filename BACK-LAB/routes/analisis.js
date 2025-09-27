@@ -157,7 +157,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-
+//PUT - actualizar análisis por nro_informe
 /**
  * @swagger
  * /api/analisis/{nro_informe}:
@@ -221,6 +221,7 @@ router.put('/:nro_informe', async (req, res) => {
   }
 });
 
+//ELIMINAR ANALISIS por Nro de INFORME.
 /**
  * @swagger
  * /api/analisis/{nro_informe}:
@@ -273,6 +274,40 @@ router.delete('/:nro_informe', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/analisis/total:
+ *   get:
+ *     summary: Obtener el número total de análisis
+ *     tags: [Análisis]
+ *     responses:
+ *       200:
+ *         description: Número total de análisis
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 total:
+ *                   type: number
+ */
+router.get('/total', async (req, res) => {
+  try {
+    const total = await Analisis.countDocuments();
+    res.json({
+      success: true,
+      total
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Error al obtener el total de análisis',
+      details: error.message
+    });
+  }
+});
 //GET número TOTAL de ANALISIS. (que luego uso para hacer regla de 3 y sacar porcentajes en el front)
 /**
  * @swagger
@@ -295,7 +330,7 @@ router.delete('/:nro_informe', async (req, res) => {
  */
 router.get('/analisis/total', async (req, res) => {
   try {
-    const total = await Analisis.countDocuments(); // cuenta todos los documentos
+    const total = await analisis.countDocuments(); // cuenta todos los documentos
     res.json({
       success: true,
       total
