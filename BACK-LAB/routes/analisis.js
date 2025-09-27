@@ -3,46 +3,7 @@ const Analisis = require('../models/Analisis');
 const Muestras = require('../models/Muestras'); // Asegúrate de tener el modelo
 const router = express.Router();
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     Analisis:
- *       type: object
- *       required:
- *         - nro_informe
- *         - solicitante
- *         - fecha
- *         - estado
- *         - tipo_analisis
- *       properties:
- *         nro_informe:
- *           type: number
- *           description: Número único del informe
- *           example: 39
- *         solicitante:
- *           type: string
- *           description: Empresa o persona que solicita el análisis
- *           example: "AGUAS CORDOBESAS S.A."
- *         fecha:
- *           type: string
- *           format: date
- *           description: Fecha del análisis
- *           example: "1997-08-07"
- *         responsable:
- *           type: string
- *           nullable: true
- *           description: Responsable del análisis
- *           example: null
- *         estado:
- *           type: string
- *           description: Estado actual del análisis
- *           example: "Hecho"
- *         tipo_analisis:
- *           type: string
- *           description: Tipo de análisis realizado
- *           example: "BACTERIOLOGICO COMPLETO"
- */
+
 
 /**
  * @swagger
@@ -103,6 +64,7 @@ router.get('/', async (req, res) => {
   }
 });
 
+//GET ANALISIS con Nro de INFORME.
 /**
  * @swagger
  * /api/analisis/{nro_informe}:
@@ -165,6 +127,7 @@ router.get('/:nro_informe', async (req, res) => {
   }
 });
 
+
 /**
  * @swagger
  * /api/analisis:
@@ -193,6 +156,7 @@ router.post('/', async (req, res) => {
     res.status(400).json({ success: false, error: error.message });
   }
 });
+
 
 /**
  * @swagger
@@ -308,6 +272,8 @@ router.delete('/:nro_informe', async (req, res) => {
     });
   }
 });
+
+
 
 /**
  * @swagger
