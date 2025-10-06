@@ -330,7 +330,7 @@ router.get('/total', async (req, res) => {
  */
 router.get('/analisis/total', async (req, res) => {
   try {
-    const total = await analisis.countDocuments(); // cuenta todos los documentos
+    const total = await Analisis.countDocuments(); // cuenta todos los documentos
     res.json({
       success: true,
       total
