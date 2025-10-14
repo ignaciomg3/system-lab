@@ -163,5 +163,106 @@ router.get('/todas', async (req, res) => {
 });
 
 
+/**
+ * @swagger
+ * /api/muestras:
+ *   post:
+ *     summary: Crear una nueva muestra
+ *     tags: [Muestras]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - nro_informe
+ *               - muestra_nombre
+ *               - parametros
+ *             properties:
+ *               nro_informe:
+ *                 type: number
+ *                 description: Número de informe
+ *                 example: 6177
+ *               muestra_nombre:
+ *                 type: string
+ *                 description: Nombre de la muestra
+ *                 example: "Agua Lago Interno de Recreación"
+ *               parametros:
+ *                 type: object
+ *                 description: Parámetros analizados con sus valores y unidades
+ *                 example:
+ *                   DBO5:
+ *                     valor: 7
+ *                     unidad: "mg/l"
+ *                   pH:
+ *                     valor: 7.2
+ *                     unidad: null
+ *     responses:
+ *       201:
+ *         description: Muestra creada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   $ref: '#/components/schemas/Muestras'
+ *       400:
+ *         description: Error de validación
+ *       500:
+ *         description: Error interno del servidor
+ */
+router.post('/', async (req, res) => {
+  try {
+    const { nro_informe, muestra_nombre, parametros } = req.body;
+
+    // Validaciones básicas
+    if (!nro_informe || !muestra_nombre || !parametros) {
+      return res.status(400).json({
+        success: false,
+        error: 'Faltan campos requeridos: nro_informe, muestra_nombre, parametros'
+      });
+    }
+
+    // Crear nueva muestra
+    const nuevaMuestra = new Muestras({
+      nro_informe,
+      muestra_nombre,
+      parametros
+    });
+
+    // Guardar en base de datos
+    const muestraGuardada = await nuevaMuestra.save();
+
+    res.status(201).json({
+      success: true,
+      message: 'Muestra creada exitosamente',
+      data: muestraGuardada
+    });
+
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      const errores = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({
+        success: false,
+        error: 'Errores de validación',
+        details: errores
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      error: 'Error al crear la muestra',
+      details: error.message
+    });
+  }
+});
+
+
 
 module.exports = router;
