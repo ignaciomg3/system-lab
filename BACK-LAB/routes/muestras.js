@@ -17,14 +17,14 @@ const router = express.Router();
  *         schema:
  *           type: integer
  *         description: Número de informe para filtrar las muestras
- *         example: 6177
+ *         example: 6184
  *       - in: query
  *         name: nro_muestra
  *         required: false
  *         schema:
  *           type: string
  *         description: Número de muestra para filtrar las muestras
- *         example: "M001"
+ *         example: "1"
  *     responses:
  *       200:
  *         description: Lista de muestras obtenidas exitosamente
@@ -238,10 +238,10 @@ router.post('/', async (req, res) => {
     const { nro_informe, nro_muestra, muestra_nombre, parametros } = req.body;
     
     // Validaciones básicas
-    if (!nro_informe || !nro_muestra || !muestra_nombre || !parametros) {
+    if (!nro_informe || !nro_muestra || !parametros) {
       return res.status(400).json({
         success: false,
-        error: 'Faltan campos requeridos: nro_informe, nro_muestra, muestra_nombre, parametros'
+        error: 'Faltan campos requeridos: nro_informe, nro_muestra, parametros'
       });
     }
 
@@ -280,6 +280,95 @@ router.post('/', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/muestras:
+ *   delete:
+ *     summary: Eliminar muestras por número de informe y opcionalmente por número de muestra
+ *     tags: [Muestras]
+ *     description: Elimina una o múltiples muestras filtradas por nro_informe y opcionalmente por nro_muestra.
+ *     parameters:
+ *       - in: query
+ *         name: nro_informe
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Número de informe (requerido)
+ *         example: 9999
+ *       - in: query
+ *         name: nro_muestra
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Número de muestra (opcional)
+ *         example: "1"
+ *     responses:
+ *       200:
+ *         description: Muestras eliminadas exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 deletedCount:
+ *                   type: integer
+ *       400:
+ *         description: Parámetro nro_informe es requerido
+ *       404:
+ *         description: No se encontraron muestras para eliminar
+ *       500:
+ *         description: Error interno del servidor
+ */
+router.delete('/', async (req, res) => {
+  try {
+    const { nro_informe, nro_muestra } = req.query;
+    
+    // Validar que nro_informe sea proporcionado
+    if (!nro_informe) {
+      return res.status(400).json({
+        success: false,
+        error: 'El parámetro nro_informe es requerido para eliminar muestras'
+      });
+    }
 
+    // Construir filtro para eliminación
+    let filter = {
+      nro_informe: Number(nro_informe)
+    };
+    
+    // Agregar nro_muestra al filtro si se proporciona
+    if (nro_muestra) {
+      filter.nro_muestra = nro_muestra;
+    }
+
+    // Eliminar muestras que coincidan con el filtro
+    const resultado = await Muestras.deleteMany(filter);
+
+    // Verificar si se eliminó alguna muestra
+    if (resultado.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'No se encontraron muestras que coincidan con los criterios especificados'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: `Se eliminaron ${resultado.deletedCount} muestra(s) exitosamente`,
+      deletedCount: resultado.deletedCount
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Error al eliminar las muestras',
+      details: error.message
+    });
+  }
+});
 
 module.exports = router;
