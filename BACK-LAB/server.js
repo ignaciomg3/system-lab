@@ -48,9 +48,7 @@ app.get('/', (req, res) => {
     collections: [
       'users',
       'analisis', 
-      'resultados_muestras',
-      'muestras_1997',
-      'muestras_1999'
+      'resultados_muestras'
     ]
   });
 });

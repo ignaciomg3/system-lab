@@ -126,25 +126,22 @@ const options = {
       }
     },
     tags: [
-      {
-        name: 'Usuarios',
-        description: 'Operaciones relacionadas con usuarios'
-      },
+      
       {
         name: 'Análisis',
         description: 'Gestión de análisis de laboratorio'
+      },
+      {
+        name: 'Muestras',
+        description: 'Gestión de muestras de laboratorio'
       },
       {
         name: 'Resultados',
         description: 'Resultados de análisis de muestras'
       },
       {
-        name: 'Muestras 1997',
-        description: 'Muestras de la campaña de 1997'
-      },
-      {
-        name: 'Muestras 1999',
-        description: 'Muestras de la campaña de 1999'
+        name: 'Usuarios',
+        description: 'Operaciones relacionadas con usuarios'
       }
     ]
   },

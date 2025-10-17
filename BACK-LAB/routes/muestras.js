@@ -8,6 +8,7 @@ const router = express.Router();
  * /api/muestras:
  *   get:
  *     summary: Obtiene las muestras por número de informe
+ *     tags: [Muestras]
  *     description: Retorna una lista de muestras filtradas por el parámetro nro_informe.
  *     parameters:
  *       - in: query
@@ -58,23 +59,40 @@ const router = express.Router();
  *                   type: string
  */
 
-// GET /api/muestras?nro_informe=valor
+// GET /api/muestras?nro_informe=valor&nro_muestra=valor
 router.get('/', async (req, res) => {
   try {
-    const { nro_informe } = req.query;
-    if (!nro_informe) {
+    const { nro_informe, nro_muestra } = req.query;
+    
+    // Construir filtro dinámico
+    let filter = {};
+    
+    if (nro_informe) {
+      filter.nro_informe = Number(nro_informe);
+    }
+    
+    if (nro_muestra) {
+      filter.nro_muestra = nro_muestra;
+    }
+
+    // Si no hay filtros, devolver error
+    if (Object.keys(filter).length === 0) {
       return res.status(400).json({
         success: false,
-        error: 'Debe proporcionar el parámetro nro_informe'
+        error: 'Debe proporcionar al menos uno de los parámetros: nro_informe o nro_muestra'
       });
     }
-    const muestras = await Muestras.find({ nro_informe: Number(nro_informe) });
+
+    //guarda las muestras que cumplen con el filtro:
+    const muestras = await Muestras.find(filter);
+    
     res.json({
       success: true,
       count: muestras.length,
       data: muestras
     });
   } catch (error) {
+    // Responde 500 y devuelve un mensaje genérico; 'details' contiene error.message para depuración
     res.status(500).json({
       success: false,
       error: 'Error al obtener las muestras',
@@ -83,11 +101,15 @@ router.get('/', async (req, res) => {
   }
 });
 
+
+
+
 /**
  * @swagger
  * /api/muestras/todas:
  *   get:
  *     summary: Obtiene todas las muestras con paginación
+ *     tags: [Muestras]
  *     description: Retorna una lista paginada de todas las muestras ordenadas por número de informe descendente.
  *     parameters:
  *       - in: query

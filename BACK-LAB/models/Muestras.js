@@ -6,9 +6,13 @@ const MuestrasSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  nro_muestra: {
+    type: Number,
+    required: true
+  },
   muestra_nombre: {
     type: String,
-    required: true
+    required: false
   },
   parametros: {
     type: Object,
@@ -16,5 +20,5 @@ const MuestrasSchema = new mongoose.Schema({
   }
 });
 
-// Cambia el nombre de la colección a 'resultados_muestras'
-module.exports = mongoose.model('Muestras', MuestrasSchema, 'resultados_muestras');
+// Cambia el nombre de la colección a 'Muestras, MuestrasSchema, 'tabla'
+module.exports = mongoose.model('Muestras', MuestrasSchema, 'muestras');

@@ -413,6 +413,7 @@ router.get('/clientes/porcentaje', async (req, res) => {
  * /analisis/porcentaje:
  *   get:
  *     summary: Obtener porcentaje de análisis por solicitante
+ *     tags: [Análisis]
  *     description: Devuelve el total de análisis y el porcentaje de cada solicitante.
  *     responses:
  *       200:
