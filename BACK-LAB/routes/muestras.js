@@ -17,6 +17,14 @@ const router = express.Router();
  *         schema:
  *           type: integer
  *         description: Número de informe para filtrar las muestras
+ *         example: 6177
+ *       - in: query
+ *         name: nro_muestra
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Número de muestra para filtrar las muestras
+ *         example: "M001"
  *     responses:
  *       200:
  *         description: Lista de muestras obtenidas exitosamente
@@ -34,29 +42,9 @@ const router = express.Router();
  *                   items:
  *                     $ref: '#/components/schemas/Muestras'
  *       400:
- *         description: Parámetro nro_informe faltante
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                 error:
- *                   type: string
+ *         description: Debe proporcionar al menos un parámetro de filtro
  *       500:
  *         description: Error interno al obtener las muestras
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                 error:
- *                   type: string
- *                 details:
- *                   type: string
  */
 
 // GET /api/muestras?nro_informe=valor&nro_muestra=valor
@@ -149,6 +137,7 @@ router.get('/', async (req, res) => {
  *       500:
  *         description: Error interno al obtener las muestras
  */
+
 // GET /api/muestras/todas?page=1&limit=10
 router.get('/todas', async (req, res) => {
   try {
@@ -205,11 +194,16 @@ router.get('/todas', async (req, res) => {
  *               nro_informe:
  *                 type: number
  *                 description: Número de informe
- *                 example: 6177
+ *                 example: 9999
+ *               nro_muestra:
+ *                 type: number
+ *                 description: Número de muestra
+ *                 example: 1
  *               muestra_nombre:
  *                 type: string
  *                 description: Nombre de la muestra
- *                 example: "Agua Lago Interno de Recreación"
+ *                 example: "Agua del río Pilcomayo"
+ * 
  *               parametros:
  *                 type: object
  *                 description: Parámetros analizados con sus valores y unidades
@@ -219,7 +213,7 @@ router.get('/todas', async (req, res) => {
  *                     unidad: "mg/l"
  *                   pH:
  *                     valor: 7.2
- *                     unidad: null
+ *                     unidad: "medida"
  *     responses:
  *       201:
  *         description: Muestra creada exitosamente
@@ -241,19 +235,20 @@ router.get('/todas', async (req, res) => {
  */
 router.post('/', async (req, res) => {
   try {
-    const { nro_informe, muestra_nombre, parametros } = req.body;
-
+    const { nro_informe, nro_muestra, muestra_nombre, parametros } = req.body;
+    
     // Validaciones básicas
-    if (!nro_informe || !muestra_nombre || !parametros) {
+    if (!nro_informe || !nro_muestra || !muestra_nombre || !parametros) {
       return res.status(400).json({
         success: false,
-        error: 'Faltan campos requeridos: nro_informe, muestra_nombre, parametros'
+        error: 'Faltan campos requeridos: nro_informe, nro_muestra, muestra_nombre, parametros'
       });
     }
 
     // Crear nueva muestra
     const nuevaMuestra = new Muestras({
       nro_informe,
+      nro_muestra,
       muestra_nombre,
       parametros
     });

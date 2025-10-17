@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// Schema para Resultados de Muestras
+// Schema para  Muestras
 const MuestrasSchema = new mongoose.Schema({
   nro_informe: {
     type: Number,
@@ -20,5 +20,5 @@ const MuestrasSchema = new mongoose.Schema({
   }
 });
 
-// Cambia el nombre de la colección a 'Muestras, MuestrasSchema, 'tabla'
+//  mongoose.model>('Muestras(model)', MuestrasSchema, 'tabla')
 module.exports = mongoose.model('Muestras', MuestrasSchema, 'muestras');

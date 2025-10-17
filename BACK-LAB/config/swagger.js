@@ -134,10 +134,10 @@ const options = {
       {
         name: 'Muestras',
         description: 'Gestión de muestras de laboratorio'
-      },
+      }, 
       {
-        name: 'Resultados',
-        description: 'Resultados de análisis de muestras'
+        name: 'Estadísticas',
+        description: 'Estadísticas y reportes de análisis'
       },
       {
         name: 'Usuarios',

@@ -279,7 +279,7 @@ router.delete('/:nro_informe', async (req, res) => {
  * /api/analisis/total:
  *   get:
  *     summary: Obtener el número total de análisis
- *     tags: [Análisis]
+ *     tags: [Estadísticas]
  *     responses:
  *       200:
  *         description: Número total de análisis
@@ -314,7 +314,7 @@ router.get('/total', async (req, res) => {
  * /api/analisis/total:
  *   get:
  *     summary: Obtener el número total de análisis
- *     tags: [Análisis]
+ *     tags: [Estadísticas]
  *     responses:
  *       200:
  *         description: Número total de análisis
@@ -350,7 +350,7 @@ router.get('/analisis/total', async (req, res) => {
  * /api/analisis/porcentajes-clientes:
  *   get:
  *     summary: Obtener porcentajes de análisis según cliente
- *     tags: [Análisis]
+ *     tags: [Estadísticas]
  *     responses:
  *       200:
  *         description: Porcentajes por cliente
@@ -413,7 +413,7 @@ router.get('/clientes/porcentaje', async (req, res) => {
  * /analisis/porcentaje:
  *   get:
  *     summary: Obtener porcentaje de análisis por solicitante
- *     tags: [Análisis]
+ *     tags: [Estadísticas]
  *     description: Devuelve el total de análisis y el porcentaje de cada solicitante.
  *     responses:
  *       200:
