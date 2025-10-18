@@ -3,6 +3,9 @@ const Muestras = require('../models/Muestras');
 const router = express.Router();
 
 
+
+/***************************** GET ***********************************/
+//OBTENER MUESTRAS POR NRO_INFORME Y/O NRO_MUESTRA
 /**
  * @swagger
  * /api/muestras:
@@ -91,7 +94,7 @@ router.get('/', async (req, res) => {
 
 
 
-
+//OBTENER TODAS LAS MUESTRAS CON PAGINACIÓN
 /**
  * @swagger
  * /api/muestras/todas:
@@ -173,7 +176,9 @@ router.get('/todas', async (req, res) => {
   }
 });
 
+/***************************** POST ***********************************/
 
+//CREAR NUEVA MUESTRA
 /**
  * @swagger
  * /api/muestras:
@@ -280,6 +285,104 @@ router.post('/', async (req, res) => {
   }
 });
 
+
+/****************************** DELETE *********************************/
+
+//ELIMINAR TODAS las MUESTRAS DE UN INFORME POR NRO_INFORME
+/**
+ * @swagger
+ * /api/muestras:
+ *   delete:
+ *     summary: Eliminar muestras por número de informe y opcionalmente por número de muestra
+ *     tags: [Muestras]
+ *     description: Elimina una o múltiples muestras filtradas por nro_informe y opcionalmente por nro_muestra.
+ *     parameters:
+ *       - in: query
+ *         name: nro_informe
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Número de informe (requerido)
+ *         example: 6184
+ *       - in: query
+ *         name: nro_muestra
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Número de muestra (opcional)
+ *         example: "1"
+ *     responses:
+ *       200:
+ *         description: Muestras eliminadas exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 deletedCount:
+ *                   type: integer
+ *       400:
+ *         description: Parámetro nro_informe es requerido
+ *       404:
+ *         description: No se encontraron muestras para eliminar
+ *       500:
+ *         description: Error interno del servidor
+ */
+router.delete('/', async (req, res) => {
+  try {
+    const { nro_informe, nro_muestra } = req.query;
+    
+    // Validar que nro_informe sea proporcionado
+    if (!nro_informe) {
+      return res.status(400).json({
+        success: false,
+        error: 'El parámetro nro_informe es requerido para eliminar muestras'
+      });
+    }
+
+    // Construir filtro para eliminación
+    let filter = {
+      nro_informe: Number(nro_informe)
+    };
+    
+    // Agregar nro_muestra al filtro si se proporciona
+    if (nro_muestra) {
+      filter.nro_muestra = nro_muestra;
+    }
+
+    // Eliminar muestras que coincidan con el filtro
+    const resultado = await Muestras.deleteMany(filter);
+
+    // Verificar si se eliminó alguna muestra
+    if (resultado.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'No se encontraron muestras que coincidan con los criterios especificados'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: `Se eliminaron ${resultado.deletedCount} muestra(s) exitosamente`,
+      deletedCount: resultado.deletedCount
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Error al eliminar las muestras',
+      details: error.message
+    });
+  }
+});
+
+
+
+//ELIMINAR MUESTRAS POR NRO_INFORME Y NRO_MUESTRA
 /**
  * @swagger
  * /api/muestras:
@@ -366,6 +469,119 @@ router.delete('/', async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Error al eliminar las muestras',
+      details: error.message
+    });
+  }
+});
+
+
+/****************************** PUT *********************************/
+
+//ACTUALIZAR MUESTRAS POR NRO_INFORME Y NRO_MUESTRA
+/**
+ * @swagger
+ * /api/muestras/actualizar:
+ *   put:
+ *     summary: Actualizar muestra por nro_informe y nro_muestra
+ *     tags: [Muestras]
+ *     description: Actualiza una muestra específica usando nro_informe y nro_muestra como identificadores.
+ *     parameters:
+ *       - in: query
+ *         name: nro_informe
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Número de informe
+ *         example: 9999
+ *       - in: query
+ *         name: nro_muestra
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Número de muestra
+ *         example: "1"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               muestra_nombre:
+ *                 type: string
+ *                 example: "Agua del río Pilcomayo - Actualizada"
+ *               parametros:
+ *                 type: object
+ *                 example:
+ *                   DBO5:
+ *                     valor: 8
+ *                     unidad: "mg/l"
+ *                   pH:
+ *                     valor: 7.5
+ *                     unidad: "medida"
+ *     responses:
+ *       200:
+ *         description: Muestra actualizada exitosamente
+ *       400:
+ *         description: Parámetros requeridos faltantes
+ *       404:
+ *         description: Muestra no encontrada
+ *       500:
+ *         description: Error interno del servidor
+ */
+router.put('/actualizar', async (req, res) => {
+  try {
+    const { nro_informe, nro_muestra } = req.query;
+    const datosActualizacion = req.body;
+
+    // Validar parámetros requeridos
+    if (!nro_informe || !nro_muestra) {
+      return res.status(400).json({
+        success: false,
+        error: 'Los parámetros nro_informe y nro_muestra son requeridos'
+      });
+    }
+
+    // Actualizar la muestra usando los filtros
+    const muestraActualizada = await Muestras.findOneAndUpdate(
+      { 
+        nro_informe: Number(nro_informe),
+        nro_muestra: nro_muestra
+      },
+      datosActualizacion,
+      { 
+        new: true, // Devuelve el documento actualizado
+        runValidators: true // Ejecuta las validaciones del esquema
+      }
+    );
+
+    // Verificar si se encontró la muestra
+    if (!muestraActualizada) {
+      return res.status(404).json({
+        success: false,
+        error: `No se encontró la muestra con nro_informe: ${nro_informe} y nro_muestra: ${nro_muestra}`
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Muestra actualizada exitosamente',
+      data: muestraActualizada
+    });
+
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      const errores = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({
+        success: false,
+        error: 'Errores de validación',
+        details: errores
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      error: 'Error al actualizar la muestra',
       details: error.message
     });
   }

@@ -32,6 +32,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 })
 .then(() => {
   console.log('✅ Conectado exitosamente a MongoDB');
+  console.log('Documentación de la API: http://localhost:3000/api-docs/#/');
 })
 .catch((error) => {
   console.error('❌ Error conectando a MongoDB:', error);
@@ -48,7 +49,7 @@ app.get('/', (req, res) => {
     collections: [
       'users',
       'analisis', 
-      'resultados_muestras'
+      'muestras'
     ]
   });
 });
