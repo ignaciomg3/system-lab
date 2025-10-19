@@ -15,6 +15,7 @@ const analisisRoutes = require('./routes/analisis');
 const muestrasRoutes = require('./routes/muestras');
 const authRoutes = require('./routes/auth');
 const elementosRoutes = require('./routes/elementos');
+const parametrosRoutes = require('./routes/parametros');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -33,7 +34,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 })
 .then(() => {
   console.log('✅ Conectado exitosamente a MongoDB');
-  console.log('Documentación de la API: http://localhost:3000/api-docs/#/');
+  console.log('📚 Documentación de la API: http://localhost:3000/api-docs/#/');
 })
 .catch((error) => {
   console.error('❌ Error conectando a MongoDB:', error);
@@ -51,7 +52,8 @@ app.get('/', (req, res) => {
       'users',
       'analisis', 
       'muestras',
-      'elementos'
+      'elementos',
+      'parametros'
     ]
   });
 });
@@ -65,6 +67,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/analisis', analisisRoutes);
 app.use('/api/muestras', muestrasRoutes);
 app.use('/api/elementos', elementosRoutes);
+app.use('/api/parametros', parametrosRoutes);
 
 // Middleware para rutas no encontradas
 app.use('*', (req, res) => {
