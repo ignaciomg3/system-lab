@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 
-
+/************************  GET ****************************/
 /**
  * @swagger
  * /api/analisis/total:
