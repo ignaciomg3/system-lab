@@ -10,7 +10,7 @@ const router = express.Router();
  * /api/parametros:
  *   get:
  *     summary: Obtiene todos los parámetros
- *     tags: [Parametros]
+ *     tags: [Parámetros]
  *     description: Retorna una lista de todos los parámetros ordenados por nombre.
  *     responses:
  *       200:
@@ -55,7 +55,7 @@ router.get('/', async (req, res) => {
  * /api/parametros/tipo/{tipo}:
  *   get:
  *     summary: Obtiene parámetros por tipo
- *     tags: [Parametros]
+ *     tags: [Parámetros]
  *     parameters:
  *       - in: path
  *         name: tipo
@@ -105,7 +105,7 @@ router.get('/tipo/:tipo', async (req, res) => {
  * /api/parametros/{id}:
  *   get:
  *     summary: Obtiene un parámetro por su ID
- *     tags: [Parametros]
+ *     tags: [Parámetros]
  *     parameters:
  *       - in: path
  *         name: id
@@ -163,7 +163,7 @@ router.get('/:id', async (req, res) => {
  * /api/parametros:
  *   post:
  *     summary: Crear un nuevo parámetro
- *     tags: [Parametros]
+ *     tags: [Parámetros]
  *     requestBody:
  *       required: true
  *       content:
@@ -250,20 +250,21 @@ router.post('/', async (req, res) => {
 
 /***************************** PUT ***********************************/
 
-// ACTUALIZAR PARAMETRO POR ID
+// ACTUALIZAR PARAMETRO POR NOMBRE
 /**
  * @swagger
- * /api/parametros/{id}:
+ * /api/parametros/{nombre}:
  *   put:
- *     summary: Actualizar un parámetro por su ID
- *     tags: [Parametros]
+ *     summary: Actualizar un parámetro por su nombre
+ *     tags: [Parámetros]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: nombre
  *         required: true
  *         schema:
  *           type: string
- *         description: ID del parámetro a actualizar
+ *         description: Nombre del parámetro a actualizar
+ *         example: "Coliformes Fecales"
  *     requestBody:
  *       required: true
  *       content:
@@ -288,22 +289,14 @@ router.post('/', async (req, res) => {
  *       500:
  *         description: Error interno del servidor
  */
-router.put('/:id', async (req, res) => {
+router.put('/:nombre', async (req, res) => {
   try {
-    const { id } = req.params;
+    const { nombre } = req.params;
     const datosActualizacion = req.body;
 
-    // Validar que el ID sea válido
-    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-      return res.status(400).json({
-        success: false,
-        error: 'ID de parámetro inválido'
-      });
-    }
-
-    // Actualizar el parámetro
-    const parametroActualizado = await Parametros.findByIdAndUpdate(
-      id,
+    // Actualizar el parámetro por nombre
+    const parametroActualizado = await Parametros.findOneAndUpdate(
+      { nombre: nombre },
       datosActualizacion,
       { 
         new: true, 
@@ -314,7 +307,7 @@ router.put('/:id', async (req, res) => {
     if (!parametroActualizado) {
       return res.status(404).json({
         success: false,
-        error: 'No se encontró el parámetro'
+        error: `No se encontró el parámetro con nombre: ${nombre}`
       });
     }
 
@@ -351,20 +344,21 @@ router.put('/:id', async (req, res) => {
 
 /***************************** DELETE ***********************************/
 
-// ELIMINAR PARAMETRO POR ID
+// ELIMINAR PARAMETRO POR NOMBRE
 /**
  * @swagger
- * /api/parametros/{id}:
+ * /api/parametros/{nombre}:
  *   delete:
- *     summary: Eliminar un parámetro por su ID
- *     tags: [Parametros]
+ *     summary: Eliminar un parámetro por su nombre
+ *     tags: [Parámetros]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: nombre
  *         required: true
  *         schema:
  *           type: string
- *         description: ID del parámetro a eliminar
+ *         description: Nombre del parámetro a eliminar
+ *         example: "Coliformes Fecales"
  *     responses:
  *       200:
  *         description: Parámetro eliminado exitosamente
@@ -373,24 +367,16 @@ router.put('/:id', async (req, res) => {
  *       500:
  *         description: Error interno del servidor
  */
-router.delete('/:id', async (req, res) => {
+router.delete('/:nombre', async (req, res) => {
   try {
-    const { id } = req.params;
+    const { nombre } = req.params;
     
-    // Validar que el ID sea válido
-    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-      return res.status(400).json({
-        success: false,
-        error: 'ID de parámetro inválido'
-      });
-    }
-
-    const parametroEliminado = await Parametros.findByIdAndDelete(id);
+    const parametroEliminado = await Parametros.findOneAndDelete({ nombre: nombre });
 
     if (!parametroEliminado) {
       return res.status(404).json({
         success: false,
-        error: 'No se encontró el parámetro'
+        error: `No se encontró el parámetro con nombre: ${nombre}`
       });
     }
 

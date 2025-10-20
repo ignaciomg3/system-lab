@@ -9,12 +9,11 @@ require('dotenv').config();
 const { specs, swaggerUi, swaggerOptions } = require('./config/swagger');
 
 // Importar rutas
-const userRoutes = require('./routes/users');
-const analisisRoutes = require('./routes/analisis');
-
-const muestrasRoutes = require('./routes/muestras');
-const authRoutes = require('./routes/auth');
-const elementosRoutes = require('./routes/elementos');
+const userRoutes       = require('./routes/users');
+const analisisRoutes   = require('./routes/analisis');
+const muestrasRoutes   = require('./routes/muestras');
+const authRoutes       = require('./routes/auth');
+const elementosRoutes  = require('./routes/elementos');
 const parametrosRoutes = require('./routes/parametros');
 
 const app = express();

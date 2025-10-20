@@ -17,5 +17,6 @@ const ParametrosSchema = new mongoose.Schema({
   }
 });
 
+
 // mongoose.model('Parametros(model)', ParametrosSchema, 'tabla')
 module.exports = mongoose.model('Parametros', ParametrosSchema, 'parametros');

@@ -5,22 +5,14 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'API Backend Laboratorio',
+      title: 'API Sistema Laboratorio',
       version: '1.0.0',
-      description: 'API RESTful para gestión de datos de laboratorio con MongoDB',
-      contact: {
-        name: 'Soporte API',
-        email: 'soporte@laboratorio.com'
-      },
+      description: 'API para gestión de análisis de laboratorio',
     },
     servers: [
       {
         url: 'http://localhost:3000',
         description: 'Servidor de desarrollo',
-      },
-      {
-        url: 'https://api.laboratorio.com',
-        description: 'Servidor de producción',
       },
     ],
     components: {
@@ -123,6 +115,140 @@ const options = {
             }
           }
         }
+      },
+      schemas: {
+        Analisis: {
+          type: 'object',
+          required: ['nro_informe', 'fecha_ingreso', 'solicitante'],
+          properties: {
+            _id: {
+              type: 'string',
+              description: 'ID único del análisis'
+            },
+            nro_informe: {
+              type: 'number',
+              description: 'Número de informe',
+              example: 39
+            },
+            fecha_ingreso: {
+              type: 'string',
+              format: 'date',
+              description: 'Fecha de ingreso del análisis',
+              example: '2023-10-19'
+            },
+            fecha_informe: {
+              type: 'string',
+              format: 'date',
+              description: 'Fecha del informe',
+              example: '2023-10-20'
+            },
+            solicitante: {
+              type: 'string',
+              description: 'Nombre del solicitante',
+              example: 'AGUAS CORDOBESAS S.A.'
+            },
+            direccion: {
+              type: 'string',
+              description: 'Dirección del solicitante',
+              example: 'Av. Colón 1234'
+            },
+            tipo_analisis: {
+              type: 'string',
+              description: 'Tipo de análisis realizado',
+              example: 'BACTERIOLOGICO COMPLETO'
+            },
+            estado: {
+              type: 'string',
+              description: 'Estado del análisis',
+              example: 'Hecho',
+              enum: ['Pendiente', 'En Proceso', 'Hecho', 'Cancelado']
+            },
+            observaciones: {
+              type: 'string',
+              description: 'Observaciones adicionales'
+            }
+          }
+        },
+        Muestras: {
+          type: 'object',
+          required: ['nro_informe', 'muestra_nombre', 'parametros'],
+          properties: {
+            _id: {
+              type: 'string',
+              description: 'ID único de la muestra'
+            },
+            nro_informe: {
+              type: 'number',
+              description: 'Número de informe',
+              example: 6177
+            },
+            nro_muestra: {
+              type: 'string',
+              description: 'Número de muestra',
+              example: '1'
+            },
+            muestra_nombre: {
+              type: 'string',
+              description: 'Nombre de la muestra',
+              example: 'Agua Lago Interno de Recreación'
+            },
+            parametros: {
+              type: 'object',
+              description: 'Parámetros analizados',
+              example: {
+                DBO5: {
+                  valor: 7,
+                  unidad: 'mg/l'
+                }
+              }
+            }
+          }
+        },
+        Parametros: {
+          type: 'object',
+          required: ['nombre', 'unidad', 'tipo'],
+          properties: {
+            _id: {
+              type: 'string',
+              description: 'ID único del parámetro'
+            },
+            nombre: {
+              type: 'string',
+              description: 'Nombre del parámetro',
+              example: 'Coliformes Fecales'
+            },
+            unidad: {
+              type: 'string',
+              description: 'Unidad de medida',
+              example: 'UFC/100 ml'
+            },
+            tipo: {
+              type: 'string',
+              description: 'Tipo de parámetro',
+              example: 'Bacteriológico'
+            }
+          }
+        },
+        Elementos: {
+          type: 'object',
+          required: ['nro_elemento', 'descripcion'],
+          properties: {
+            _id: {
+              type: 'string',
+              description: 'ID único del elemento'
+            },
+            nro_elemento: {
+              type: 'number',
+              description: 'Número del elemento',
+              example: 1
+            },
+            descripcion: {
+              type: 'string',
+              description: 'Descripción del elemento',
+              example: 'Agua'
+            }
+          }
+        }
       }
     },
     tags: [
@@ -138,6 +264,14 @@ const options = {
       {
         name: 'Estadísticas',
         description: 'Estadísticas y reportes de análisis'
+      },
+      {        
+        name: 'Parámetros',
+        description: 'Gestión de parámetros de análisis'
+      },
+      {
+        name: 'Elementos',
+        description: 'Gestión de elementos de análisis'
       },
       {
         name: 'Usuarios',
@@ -175,6 +309,69 @@ const swaggerOptions = {
       padding: 10px; 
       margin-bottom: 20px; 
     }
+    
+    /* AGREGA AQUÍ LOS NUEVOS ESTILOS DE COLORES */
+    .swagger-ui .opblock-tag[data-tag="Análisis"] {
+      background-color: #95bcfaff !important;
+      color: white !important;
+    }
+    
+    .swagger-ui .opblock-tag[data-tag="Muestras"] {
+      background-color: #8cedcdff !important;
+      color: white !important;
+    }
+    
+    .swagger-ui .opblock-tag[data-tag="Parámetros"] {
+      background-color: #fad390ff !important;
+      color: white !important;
+    }
+    
+    .swagger-ui .opblock-tag[data-tag="Estadísticas"] {
+      background-color: #675987ff !important;
+      color: white !important;
+    }
+    
+    .swagger-ui .opblock-tag[data-tag="Usuarios"] {
+      background-color: #f9a0a0ff !important;
+      color: white !important;
+    }
+
+    .swagger-ui .opblock-tag[data-tag="Elementos"] {
+      background-color: #87b48fff !important;
+      color: white !important;
+    }
+    
+    .swagger-ui .opblock-tag:hover {
+      opacity: 0.8;
+      transform: scale(1.02);
+      transition: all 0.2s ease;
+    }
+ 
+
+    /* Colapsar todas las tags por defecto */
+    .swagger-ui .opblock-tag-section.is-open > .opblock-tag {
+      margin-bottom: 20;
+    }
+    
+    .swagger-ui .opblock-tag-section:not(.is-open) .no-margin {
+      display: none;
+    }
+    
+    .swagger-ui .opblock-tag-section .opblock-tag {
+      cursor: pointer;
+      border-bottom: 10px solid rgba(59,65,81,.3);
+    }
+    
+    /* Ocultar endpoints por defecto */
+    .swagger-ui .opblock-tag-section .no-margin {
+      display: none;
+    }
+    
+    /* Mostrar solo cuando la tag tiene clase 'is-open' */
+    .swagger-ui .opblock-tag-section.is-open .no-margin {
+      display: block;
+    }
+     
   `,
   customSiteTitle: "API Laboratorio - Documentación",
   customfavIcon: "/favicon.ico"
