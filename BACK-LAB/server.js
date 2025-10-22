@@ -13,8 +13,9 @@ const userRoutes       = require('./routes/users');
 const analisisRoutes   = require('./routes/analisis');
 const muestrasRoutes   = require('./routes/muestras');
 const authRoutes       = require('./routes/auth');
-const elementosRoutes  = require('./routes/elementos');
+const elementosRoutes  = require('./routes/elementos'); 
 const parametrosRoutes = require('./routes/parametros');
+const plantillasRoutes = require('./routes/plantillas'); // ← AGREGAR ESTA LÍNEA
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -67,6 +68,7 @@ app.use('/api/analisis', analisisRoutes);
 app.use('/api/muestras', muestrasRoutes);
 app.use('/api/elementos', elementosRoutes);
 app.use('/api/parametros', parametrosRoutes);
+app.use('/api/plantillas', plantillasRoutes); // ← AGREGAR ESTA LÍNEA
 
 // Middleware para rutas no encontradas
 app.use('*', (req, res) => {

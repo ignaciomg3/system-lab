@@ -248,7 +248,59 @@ const options = {
               example: 'Agua'
             }
           }
+        },
+        Users:{ 
+          type: 'object',
+          required: ['nombre', 'email', 'rol'],
+          properties: {
+            _id: {
+              type: 'string',
+              description: 'ID único del usuario'
+            },
+            nombre: {
+              type: 'string',
+              description: 'Nombre del usuario',
+              example: 'Juan Pérez'
+            },
+            email: {
+              type: 'string',
+              description: 'Correo electrónico del usuario',
+              example: 'juan.perez@example.com'
+            },
+            rol: {
+              type: 'string',
+              description: 'Rol del usuario',
+              example: 'admin',
+              enum: ['admin', 'user']
+            }
+          }
+        },
+        Plantillas: {
+          type: 'object',
+          required: ['nombre', 'parametros'],
+          properties: {
+            
+            nombre: {
+              type: 'string',
+              description: 'Nombre de la plantilla',
+              example: 'Plantilla de Informe de Análisis'
+            },
+            solicitante: {
+              type: 'string',
+              description: 'Solicitante asociado a la plantilla',
+              example: 'AGUAS CORDOBESAS S.A.'
+            },
+            parametros: {
+              type: 'array',
+              description: 'Lista de parámetros incluidos en la plantilla',
+              items: {
+                type: 'string',
+                example: 'DBO5'
+              }
+            }
+          }
         }
+        
       }
     },
     tags: [

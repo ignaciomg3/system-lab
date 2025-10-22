@@ -1,0 +1,72 @@
+# ENDPOINTS DEL SISTEMA LABORATORIO
+
+## Análisis:
+GET     /api/analisis
+GET     /api/analisis/{id}
+POST    /api/analisis
+PUT     /api/analisis/{nro_informe}
+DELETE  /api/analisis/{nro_informe}
+
+## Muestras:
+GET     /api/muestras
+GET     /api/muestras/todas
+GET     /api/muestras/{id}
+POST    /api/muestras
+PUT     /api/muestras/{id}
+PUT     /api/muestras/actualizar
+DELETE  /api/muestras
+
+## Parámetros:
+GET     /api/parametros
+GET     /api/parametros/tipo/{tipo}
+GET     /api/parametros/{id}
+POST    /api/parametros
+PUT     /api/parametros/{nombre}
+DELETE  /api/parametros/{nombre}
+
+## Elementos:
+GET     /api/elementos
+GET     /api/elementos/{nro_elemento}
+POST    /api/elementos
+PUT     /api/elementos/{nro_elemento}
+DELETE  /api/elementos/{nro_elemento}
+## Rutas completas (para usar desde el front)
+Base URL: http://localhost:3000
+
+
+################### LINKS COMPLETOS ########################
+# Análisis
+GET     http://localhost:3000/api/analisis
+GET     http://localhost:3000/api/analisis/{id}
+POST    http://localhost:3000/api/analisis
+PUT     http://localhost:3000/api/analisis/{nro_informe}
+DELETE  http://localhost:3000/api/analisis/{nro_informe}
+
+# Muestras
+GET     http://localhost:3000/api/muestras
+GET     http://localhost:3000/api/muestras/todas
+GET     http://localhost:3000/api/muestras/{id}
+POST    http://localhost:3000/api/muestras
+PUT     http://localhost:3000/api/muestras/{id}
+PUT     http://localhost:3000/api/muestras/actualizar
+DELETE  http://localhost:3000/api/muestras
+
+# Parámetros
+GET     http://localhost:3000/api/parametros
+GET     http://localhost:3000/api/parametros/tipo/{tipo}
+GET     http://localhost:3000/api/parametros/{id}
+POST    http://localhost:3000/api/parametros
+PUT     http://localhost:3000/api/parametros/{nombre}
+DELETE  http://localhost:3000/api/parametros/{nombre}
+
+# Elementos
+GET     http://localhost:3000/api/elementos
+GET     http://localhost:3000/api/elementos/{nro_elemento}
+POST    http://localhost:3000/api/elementos
+PUT     http://localhost:3000/api/elementos/{nro_elemento}
+DELETE  http://localhost:3000/api/elementos/{nro_elemento}
+---
+Base URL: http://localhost:3000
+Documentación completa: http://localhost:3000/api-docs/
+
+Última actualización: $(Get-Date -Format "yyyy-MM-dd HH:mm")
