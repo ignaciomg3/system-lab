@@ -1,44 +1,111 @@
 <div class="new-request-form">
-  <h2>📝 Crear Nueva Solicitud</h2>
-  <form (ngSubmit)="createRequest()">
-    
-    <!-- Fecha -->
-    <div class="form-group">
-      <label for="fecha">Fecha:</label>
-      <input id="fecha" type="date" [(ngModel)]="request.fecha" name="fecha" required />
+  <div class="form-header">
+    <h2>Cotización — Nueva Solicitud</h2>
+
+    <div class="header-right">
+      <div class="header-field">
+        <label for="fecha">Fecha</label>
+        <input id="fecha" name="fecha" type="date" [(ngModel)]="request.fecha" />
+      </div>
+
+      <div class="header-field">
+        <label for="entregaFecha">Fecha de entrega</label>
+        <input id="entregaFecha" name="entregaFecha" type="date" [(ngModel)]="request.entregaFecha" />
+      </div>
+    </div>
+  </div>
+
+  <form (ngSubmit)="createRequest()" #f="ngForm" novalidate>
+
+    <!-- Cliente -->
+    <div class="form-row">
+      <label for="cliente">Nombre (Cliente)</label>
+      <select id="cliente"
+              name="cliente"
+              [(ngModel)]="request.clienteId"
+              (change)="onClientChange()"
+              required>
+        <option [ngValue]="null">-- Seleccionar cliente --</option>
+        <option *ngFor="let c of clients" [ngValue]="c.id">{{ c.nombre }}</option>
+      </select>
     </div>
 
-    <!-- Número / ID -->
-    <div class="form-group">
-      <label for="numero">Número (ID):</label>
-      <input id="numero" type="number" [(ngModel)]="request.numero" name="numero" required />
+    <!-- CUIT -->
+    <div class="form-row">
+      <label for="cuit">CUIT</label>
+      <input id="cuit" name="cuit" type="text" [(ngModel)]="request.cuit" readonly />
     </div>
 
-    <!-- Solicitante -->
-    <div class="form-group">
-      <label for="solicitante">Solicitante (Empresa):</label>
-      <input id="solicitante" type="text" [(ngModel)]="request.solicitante" name="solicitante" required />
+    <!-- Dirección -->
+    <div class="form-row">
+      <label for="direccion">Dirección</label>
+      <input id="direccion" name="direccion" type="text" [(ngModel)]="request.direccion" readonly />
     </div>
 
-    <!-- Muestra -->
-    <div class="form-group">
-      <label for="muestra">Muestra:</label>
-      <input id="muestra" type="text" [(ngModel)]="request.muestra" name="muestra" required />
+    <!-- Responsable -->
+    <div class="form-row">
+      <label for="responsable">Responsable</label>
+      <select id="responsable" name="responsable" [(ngModel)]="request.responsable">
+        <option value="Ramiro">Ramiro</option>
+        <option value="Javier">Javier</option>
+      </select>
     </div>
 
-    <!-- Análisis solicitado -->
-    <div class="form-group">
-      <label>Análisis solicitado:</label>
-      <div *ngFor="let analisis of availableAnalisis">
-        <input type="checkbox" 
-               [value]="analisis"
-               (change)="toggleAnalisis(analisis, $event)" />
-        {{ analisis }}
+    <!-- Atención -->
+    <div class="form-row">
+      <label for="atencion">Atención</label>
+      <input id="atencion" name="atencion" type="text" [(ngModel)]="request.atencion" />
+    </div>
+
+    <hr />
+
+    <!-- Muestras (repetible) -->
+    <div class="muestras-section">
+      <h3>Muestras</h3>
+
+      <div class="muestra-card" *ngFor="let sample of request.muestras; let i = index">
+        <div class="muestra-header">
+          <strong>Muestra {{ i + 1 }}</strong>
+          <div class="muestra-actions">
+            <button type="button" class="btn-link" (click)="removeSample(i)" [disabled]="request.muestras.length === 1">Eliminar</button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="tipo-{{i}}">Muestra de</label>
+          <select id="tipo-{{i}}"
+                  name="tipo-{{i}}"
+                  [(ngModel)]="request.muestras[i].tipo"
+                  (change)="onSampleTypeChange(i)">
+            <option [ngValue]="null">-- Seleccionar tipo --</option>
+            <option *ngFor="let t of sampleTypes" [value]="t">{{ t }}</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label>Análisis disponibles</label>
+          <div class="analisis-list">
+            <div *ngFor="let analisis of availableAnalysesFor(request.muestras[i].tipo)">
+              <input type="checkbox"
+                     [id]="'chk-' + i + '-' + analisis"
+                     (change)="toggleSampleAnalysis(i, analisis, $event)"
+                     [checked]="request.muestras[i].analisisSeleccionados.includes(analisis)" />
+              <label [for]="'chk-' + i + '-' + analisis">{{ analisis }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="muestras-add">
+        <button type="button" class="btn-primary" (click)="addSample()">Agregar muestra</button>
       </div>
     </div>
 
-    <button type="submit">Crear Solicitud</button>
-  </form>
+    <hr />
 
-  <button routerLink="/home" class="back-home-btn">🏠 Volver a Home</button>
+    <div class="form-actions">
+      <button type="submit" class="btn-submit">Generar cotización</button>
+      <button routerLink="/home" type="button" class="btn-secondary">Volver</button>
+    </div>
+  </form>
 </div>
