@@ -65,7 +65,12 @@ GET     http://localhost:3000/api/elementos/{nro_elemento}
 POST    http://localhost:3000/api/elementos
 PUT     http://localhost:3000/api/elementos/{nro_elemento}
 DELETE  http://localhost:3000/api/elementos/{nro_elemento}
+
+# Plantillas
+GET 
 ---
+
+
 Base URL: http://localhost:3000
 Documentación completa: http://localhost:3000/api-docs/
 

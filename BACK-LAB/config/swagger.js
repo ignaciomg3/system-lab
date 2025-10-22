@@ -312,7 +312,11 @@ const options = {
       {
         name: 'Muestras',
         description: 'Gestión de muestras de laboratorio'
-      }, 
+      },
+      {
+        name: 'Plantillas',
+        description: 'Gestión de plantillas de análisis'
+      },
       {
         name: 'Estadísticas',
         description: 'Estadísticas y reportes de análisis'
@@ -325,6 +329,7 @@ const options = {
         name: 'Elementos',
         description: 'Gestión de elementos de análisis'
       },
+      
       {
         name: 'Usuarios',
         description: 'Operaciones relacionadas con usuarios'
