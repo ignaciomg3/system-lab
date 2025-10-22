@@ -3,11 +3,15 @@ const Muestras = require('../models/Muestras');
 const router = express.Router();
 
 
+
+/***************************** GET ***********************************/
+//OBTENER MUESTRAS POR NRO_INFORME Y/O NRO_MUESTRA
 /**
  * @swagger
  * /api/muestras:
  *   get:
  *     summary: Obtiene las muestras por número de informe
+ *     tags: [Muestras]
  *     description: Retorna una lista de muestras filtradas por el parámetro nro_informe.
  *     parameters:
  *       - in: query
@@ -16,6 +20,14 @@ const router = express.Router();
  *         schema:
  *           type: integer
  *         description: Número de informe para filtrar las muestras
+ *         example: 6184
+ *       - in: query
+ *         name: nro_muestra
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Número de muestra para filtrar las muestras
+ *         example: "1"
  *     responses:
  *       200:
  *         description: Lista de muestras obtenidas exitosamente
@@ -33,48 +45,45 @@ const router = express.Router();
  *                   items:
  *                     $ref: '#/components/schemas/Muestras'
  *       400:
- *         description: Parámetro nro_informe faltante
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                 error:
- *                   type: string
+ *         description: Debe proporcionar al menos un parámetro de filtro
  *       500:
  *         description: Error interno al obtener las muestras
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                 error:
- *                   type: string
- *                 details:
- *                   type: string
  */
 
-// GET /api/muestras?nro_informe=valor
+// GET /api/muestras?nro_informe=valor&nro_muestra=valor
 router.get('/', async (req, res) => {
   try {
-    const { nro_informe } = req.query;
-    if (!nro_informe) {
+    const { nro_informe, nro_muestra } = req.query;
+    
+    // Construir filtro dinámico
+    let filter = {};
+    
+    if (nro_informe) {
+      filter.nro_informe = Number(nro_informe);
+    }
+    
+    if (nro_muestra) {
+      filter.nro_muestra = nro_muestra;
+    }
+
+    // Si no hay filtros, devolver error
+    if (Object.keys(filter).length === 0) {
       return res.status(400).json({
         success: false,
-        error: 'Debe proporcionar el parámetro nro_informe'
+        error: 'Debe proporcionar al menos uno de los parámetros: nro_informe o nro_muestra'
       });
     }
-    const muestras = await Muestras.find({ nro_informe: Number(nro_informe) });
+
+    //guarda las muestras que cumplen con el filtro:
+    const muestras = await Muestras.find(filter);
+    
     res.json({
       success: true,
       count: muestras.length,
       data: muestras
     });
   } catch (error) {
+    // Responde 500 y devuelve un mensaje genérico; 'details' contiene error.message para depuración
     res.status(500).json({
       success: false,
       error: 'Error al obtener las muestras',
@@ -83,11 +92,15 @@ router.get('/', async (req, res) => {
   }
 });
 
+
+
+//OBTENER TODAS LAS MUESTRAS CON PAGINACIÓN
 /**
  * @swagger
  * /api/muestras/todas:
  *   get:
  *     summary: Obtiene todas las muestras con paginación
+ *     tags: [Muestras]
  *     description: Retorna una lista paginada de todas las muestras ordenadas por número de informe descendente.
  *     parameters:
  *       - in: query
@@ -127,6 +140,7 @@ router.get('/', async (req, res) => {
  *       500:
  *         description: Error interno al obtener las muestras
  */
+
 // GET /api/muestras/todas?page=1&limit=10
 router.get('/todas', async (req, res) => {
   try {
@@ -162,7 +176,9 @@ router.get('/todas', async (req, res) => {
   }
 });
 
+/***************************** POST ***********************************/
 
+//CREAR NUEVA MUESTRA
 /**
  * @swagger
  * /api/muestras:
@@ -183,11 +199,16 @@ router.get('/todas', async (req, res) => {
  *               nro_informe:
  *                 type: number
  *                 description: Número de informe
- *                 example: 6177
+ *                 example: 9999
+ *               nro_muestra:
+ *                 type: number
+ *                 description: Número de muestra
+ *                 example: 1
  *               muestra_nombre:
  *                 type: string
  *                 description: Nombre de la muestra
- *                 example: "Agua Lago Interno de Recreación"
+ *                 example: "Agua del río Pilcomayo"
+ * 
  *               parametros:
  *                 type: object
  *                 description: Parámetros analizados con sus valores y unidades
@@ -197,7 +218,7 @@ router.get('/todas', async (req, res) => {
  *                     unidad: "mg/l"
  *                   pH:
  *                     valor: 7.2
- *                     unidad: null
+ *                     unidad: "medida"
  *     responses:
  *       201:
  *         description: Muestra creada exitosamente
@@ -219,19 +240,20 @@ router.get('/todas', async (req, res) => {
  */
 router.post('/', async (req, res) => {
   try {
-    const { nro_informe, muestra_nombre, parametros } = req.body;
-
+    const { nro_informe, nro_muestra, muestra_nombre, parametros } = req.body;
+    
     // Validaciones básicas
-    if (!nro_informe || !muestra_nombre || !parametros) {
+    if (!nro_informe || !nro_muestra || !parametros) {
       return res.status(400).json({
         success: false,
-        error: 'Faltan campos requeridos: nro_informe, muestra_nombre, parametros'
+        error: 'Faltan campos requeridos: nro_informe, nro_muestra, parametros'
       });
     }
 
     // Crear nueva muestra
     const nuevaMuestra = new Muestras({
       nro_informe,
+      nro_muestra,
       muestra_nombre,
       parametros
     });
@@ -264,5 +286,305 @@ router.post('/', async (req, res) => {
 });
 
 
+/****************************** DELETE *********************************/
+
+//ELIMINAR TODAS las MUESTRAS DE UN INFORME POR NRO_INFORME
+/**
+ * @swagger
+ * /api/muestras:
+ *   delete:
+ *     summary: Eliminar muestras por número de informe y opcionalmente por número de muestra
+ *     tags: [Muestras]
+ *     description: Elimina una o múltiples muestras filtradas por nro_informe y opcionalmente por nro_muestra.
+ *     parameters:
+ *       - in: query
+ *         name: nro_informe
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Número de informe (requerido)
+ *         example: 6184
+ *       - in: query
+ *         name: nro_muestra
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Número de muestra (opcional)
+ *         example: "1"
+ *     responses:
+ *       200:
+ *         description: Muestras eliminadas exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 deletedCount:
+ *                   type: integer
+ *       400:
+ *         description: Parámetro nro_informe es requerido
+ *       404:
+ *         description: No se encontraron muestras para eliminar
+ *       500:
+ *         description: Error interno del servidor
+ */
+router.delete('/', async (req, res) => {
+  try {
+    const { nro_informe, nro_muestra } = req.query;
+    
+    // Validar que nro_informe sea proporcionado
+    if (!nro_informe) {
+      return res.status(400).json({
+        success: false,
+        error: 'El parámetro nro_informe es requerido para eliminar muestras'
+      });
+    }
+
+    // Construir filtro para eliminación
+    let filter = {
+      nro_informe: Number(nro_informe)
+    };
+    
+    // Agregar nro_muestra al filtro si se proporciona
+    if (nro_muestra) {
+      filter.nro_muestra = nro_muestra;
+    }
+
+    // Eliminar muestras que coincidan con el filtro
+    const resultado = await Muestras.deleteMany(filter);
+
+    // Verificar si se eliminó alguna muestra
+    if (resultado.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'No se encontraron muestras que coincidan con los criterios especificados'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: `Se eliminaron ${resultado.deletedCount} muestra(s) exitosamente`,
+      deletedCount: resultado.deletedCount
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Error al eliminar las muestras',
+      details: error.message
+    });
+  }
+});
+
+
+
+//ELIMINAR MUESTRAS POR NRO_INFORME Y NRO_MUESTRA
+/**
+ * @swagger
+ * /api/muestras:
+ *   delete:
+ *     summary: Eliminar muestras por número de informe y opcionalmente por número de muestra
+ *     tags: [Muestras]
+ *     description: Elimina una o múltiples muestras filtradas por nro_informe y opcionalmente por nro_muestra.
+ *     parameters:
+ *       - in: query
+ *         name: nro_informe
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Número de informe (requerido)
+ *         example: 9999
+ *       - in: query
+ *         name: nro_muestra
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Número de muestra (opcional)
+ *         example: "1"
+ *     responses:
+ *       200:
+ *         description: Muestras eliminadas exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 deletedCount:
+ *                   type: integer
+ *       400:
+ *         description: Parámetro nro_informe es requerido
+ *       404:
+ *         description: No se encontraron muestras para eliminar
+ *       500:
+ *         description: Error interno del servidor
+ */
+router.delete('/', async (req, res) => {
+  try {
+    const { nro_informe, nro_muestra } = req.query;
+    
+    // Validar que nro_informe sea proporcionado
+    if (!nro_informe) {
+      return res.status(400).json({
+        success: false,
+        error: 'El parámetro nro_informe es requerido para eliminar muestras'
+      });
+    }
+
+    // Construir filtro para eliminación
+    let filter = {
+      nro_informe: Number(nro_informe)
+    };
+    
+    // Agregar nro_muestra al filtro si se proporciona
+    if (nro_muestra) {
+      filter.nro_muestra = nro_muestra;
+    }
+
+    // Eliminar muestras que coincidan con el filtro
+    const resultado = await Muestras.deleteMany(filter);
+
+    // Verificar si se eliminó alguna muestra
+    if (resultado.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'No se encontraron muestras que coincidan con los criterios especificados'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: `Se eliminaron ${resultado.deletedCount} muestra(s) exitosamente`,
+      deletedCount: resultado.deletedCount
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Error al eliminar las muestras',
+      details: error.message
+    });
+  }
+});
+
+
+/****************************** PUT *********************************/
+
+//ACTUALIZAR MUESTRAS POR NRO_INFORME Y NRO_MUESTRA
+/**
+ * @swagger
+ * /api/muestras/actualizar:
+ *   put:
+ *     summary: Actualizar muestra por nro_informe y nro_muestra
+ *     tags: [Muestras]
+ *     description: Actualiza una muestra específica usando nro_informe y nro_muestra como identificadores.
+ *     parameters:
+ *       - in: query
+ *         name: nro_informe
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Número de informe
+ *         example: 9999
+ *       - in: query
+ *         name: nro_muestra
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Número de muestra
+ *         example: "1"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               muestra_nombre:
+ *                 type: string
+ *                 example: "Agua del río Pilcomayo - Actualizada"
+ *               parametros:
+ *                 type: object
+ *                 example:
+ *                   DBO5:
+ *                     valor: 8
+ *                     unidad: "mg/l"
+ *                   pH:
+ *                     valor: 7.5
+ *                     unidad: "medida"
+ *     responses:
+ *       200:
+ *         description: Muestra actualizada exitosamente
+ *       400:
+ *         description: Parámetros requeridos faltantes
+ *       404:
+ *         description: Muestra no encontrada
+ *       500:
+ *         description: Error interno del servidor
+ */
+router.put('/actualizar', async (req, res) => {
+  try {
+    const { nro_informe, nro_muestra } = req.query;
+    const datosActualizacion = req.body;
+
+    // Validar parámetros requeridos
+    if (!nro_informe || !nro_muestra) {
+      return res.status(400).json({
+        success: false,
+        error: 'Los parámetros nro_informe y nro_muestra son requeridos'
+      });
+    }
+
+    // Actualizar la muestra usando los filtros
+    const muestraActualizada = await Muestras.findOneAndUpdate(
+      { 
+        nro_informe: Number(nro_informe),
+        nro_muestra: nro_muestra
+      },
+      datosActualizacion,
+      { 
+        new: true, // Devuelve el documento actualizado
+        runValidators: true // Ejecuta las validaciones del esquema
+      }
+    );
+
+    // Verificar si se encontró la muestra
+    if (!muestraActualizada) {
+      return res.status(404).json({
+        success: false,
+        error: `No se encontró la muestra con nro_informe: ${nro_informe} y nro_muestra: ${nro_muestra}`
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Muestra actualizada exitosamente',
+      data: muestraActualizada
+    });
+
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      const errores = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({
+        success: false,
+        error: 'Errores de validación',
+        details: errores
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      error: 'Error al actualizar la muestra',
+      details: error.message
+    });
+  }
+});
 
 module.exports = router;

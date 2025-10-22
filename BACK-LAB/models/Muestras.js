@@ -1,14 +1,18 @@
 const mongoose = require('mongoose');
 
-// Schema para Resultados de Muestras
+// Schema para  Muestras
 const MuestrasSchema = new mongoose.Schema({
   nro_informe: {
     type: Number,
     required: true
   },
+  nro_muestra: {
+    type: Number,
+    required: true
+  },
   muestra_nombre: {
     type: String,
-    required: true
+    required: false
   },
   parametros: {
     type: Object,
@@ -16,5 +20,5 @@ const MuestrasSchema = new mongoose.Schema({
   }
 });
 
-// Cambia el nombre de la colección a 'resultados_muestras'
-module.exports = mongoose.model('Muestras', MuestrasSchema, 'resultados_muestras');
+//  mongoose.model>('Muestras(model)', MuestrasSchema, 'tabla')
+module.exports = mongoose.model('Muestras', MuestrasSchema, 'muestras');

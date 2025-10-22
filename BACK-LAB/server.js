@@ -9,11 +9,13 @@ require('dotenv').config();
 const { specs, swaggerUi, swaggerOptions } = require('./config/swagger');
 
 // Importar rutas
-const userRoutes = require('./routes/users');
-const analisisRoutes = require('./routes/analisis');
-
-const muestrasRoutes = require('./routes/muestras');
-const authRoutes = require('./routes/auth');
+const userRoutes       = require('./routes/users');
+const analisisRoutes   = require('./routes/analisis');
+const muestrasRoutes   = require('./routes/muestras');
+const authRoutes       = require('./routes/auth');
+const elementosRoutes  = require('./routes/elementos'); 
+const parametrosRoutes = require('./routes/parametros');
+const plantillasRoutes = require('./routes/plantillas'); // ← AGREGAR ESTA LÍNEA
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -32,6 +34,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 })
 .then(() => {
   console.log('✅ Conectado exitosamente a MongoDB');
+  console.log('📚 Documentación de la API: http://localhost:3000/api-docs/#/');
 })
 .catch((error) => {
   console.error('❌ Error conectando a MongoDB:', error);
@@ -48,9 +51,9 @@ app.get('/', (req, res) => {
     collections: [
       'users',
       'analisis', 
-      'resultados_muestras',
-      'muestras_1997',
-      'muestras_1999'
+      'muestras',
+      'elementos',
+      'parametros'
     ]
   });
 });
@@ -63,6 +66,9 @@ app.use('/api', authRoutes); // Login
 app.use('/api/users', userRoutes);
 app.use('/api/analisis', analisisRoutes);
 app.use('/api/muestras', muestrasRoutes);
+app.use('/api/elementos', elementosRoutes);
+app.use('/api/parametros', parametrosRoutes);
+app.use('/api/plantillas', plantillasRoutes); // ← AGREGAR ESTA LÍNEA
 
 // Middleware para rutas no encontradas
 app.use('*', (req, res) => {
