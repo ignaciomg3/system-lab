@@ -1,0 +1,21 @@
+[{
+  "_id": {
+    "$oid": "68f18f1d73a95e0311d584c7"
+  },
+  "nro_elemento": 1,
+  "descripcion": "Agua"
+},
+{
+  "_id": {
+    "$oid": "68f18f4373a95e0311d584c9"
+  },
+  "nro_elemento": 2,
+  "descripcion": "Efluente"
+},
+{
+  "_id": {
+    "$oid": "68f18f6a73a95e0311d584cc"
+  },
+  "nro_elemento": 3,
+  "descripcion": "Alimento"
+}]
