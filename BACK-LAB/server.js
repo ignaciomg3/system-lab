@@ -16,6 +16,7 @@ const authRoutes       = require('./routes/auth');
 const elementosRoutes  = require('./routes/elementos'); 
 const parametrosRoutes = require('./routes/parametros');
 const plantillasRoutes = require('./routes/plantillas'); // ← AGREGAR ESTA LÍNEA
+const clientesRoutes = require('./routes/clientes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -53,7 +54,9 @@ app.get('/', (req, res) => {
       'analisis', 
       'muestras',
       'elementos',
-      'parametros'
+      'parametros',
+      'plantillas',
+      'clientes'
     ]
   });
 });
@@ -68,7 +71,9 @@ app.use('/api/analisis', analisisRoutes);
 app.use('/api/muestras', muestrasRoutes);
 app.use('/api/elementos', elementosRoutes);
 app.use('/api/parametros', parametrosRoutes);
-app.use('/api/plantillas', plantillasRoutes); // ← AGREGAR ESTA LÍNEA
+app.use('/api/plantillas', plantillasRoutes);
+app.use('/api/clientes', clientesRoutes);
+
 
 // Middleware para rutas no encontradas
 app.use('*', (req, res) => {

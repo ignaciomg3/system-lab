@@ -329,7 +329,10 @@ const options = {
         name: 'Elementos',
         description: 'Gestión de elementos de análisis'
       },
-      
+      {
+        name: 'Clientes',
+        description: 'Gestión de clientes del laboratorio'
+      },
       {
         name: 'Usuarios',
         description: 'Operaciones relacionadas con usuarios'
