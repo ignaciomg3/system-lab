@@ -1,0 +1,280 @@
+[{
+  "_id": {
+    "$oid": "68f51ed6b014775531aabe64"
+  },
+  "nombre": "pH",
+  "unidad": "unidad pH",
+  "tipo": "Químico"
+},
+{
+  "_id": {
+    "$oid": "68f51ed6b014775531aabe65"
+  },
+  "nombre": "Cloro Residual Libre",
+  "unidad": "mg/l",
+  "tipo": "Químico"
+},
+{
+  "_id": {
+    "$oid": "68f51ed6b014775531aabe66"
+  },
+  "nombre": "DBO5",
+  "unidad": "mg/l",
+  "tipo": "Químico"
+},
+{
+  "_id": {
+    "$oid": "68f51ed6b014775531aabe67"
+  },
+  "nombre": "DQO",
+  "unidad": "mg/l",
+  "tipo": "Químico"
+},
+{
+  "_id": {
+    "$oid": "68f51ed6b014775531aabe68"
+  },
+  "nombre": "Dureza Total",
+  "unidad": "mg CaCO3/L",
+  "tipo": "Químico"
+},
+{
+  "_id": {
+    "$oid": "68f51ed6b014775531aabe69"
+  },
+  "nombre": "Alcalinidad Total",
+  "unidad": "mg CaCO3/L",
+  "tipo": "Químico"
+},
+{
+  "_id": {
+    "$oid": "68f51ed6b014775531aabe6a"
+  },
+  "nombre": "Nitratos",
+  "unidad": "mg/l",
+  "tipo": "Químico"
+},
+{
+  "_id": {
+    "$oid": "68f51ed6b014775531aabe6b"
+  },
+  "nombre": "Sulfatos",
+  "unidad": "mg/l",
+  "tipo": "Químico"
+},
+{
+  "_id": {
+    "$oid": "68f51ed6b014775531aabe6c"
+  },
+  "nombre": "Hierro",
+  "unidad": "mg/l",
+  "tipo": "Químico"
+},
+{
+  "_id": {
+    "$oid": "68f51ed6b014775531aabe6d"
+  },
+  "nombre": "Fosfatos",
+  "unidad": "mg/l",
+  "tipo": "Químico"
+},
+{
+  "_id": {
+    "$oid": "68f51ed6b014775531aabe6e"
+  },
+  "nombre": "Sodio",
+  "unidad": "mg/l",
+  "tipo": "Químico"
+},
+{
+  "_id": {
+    "$oid": "68f51ed6b014775531aabe6f"
+  },
+  "nombre": "Potasio",
+  "unidad": "mg/l",
+  "tipo": "Químico"
+},
+{
+  "_id": {
+    "$oid": "68f51ed6b014775531aabe70"
+  },
+  "nombre": "Calcio",
+  "unidad": "mg/l",
+  "tipo": "Químico"
+},
+{
+  "_id": {
+    "$oid": "68f51ed6b014775531aabe71"
+  },
+  "nombre": "Magnesio",
+  "unidad": "mg/l",
+  "tipo": "Químico"
+},
+{
+  "_id": {
+    "$oid": "68f51ef7b014775531aabe73"
+  },
+  "nombre": "Temperatura",
+  "unidad": "°C",
+  "tipo": "Físico"
+},
+{
+  "_id": {
+    "$oid": "68f51ef7b014775531aabe74"
+  },
+  "nombre": "Color",
+  "unidad": "UC",
+  "tipo": "Físico"
+},
+{
+  "_id": {
+    "$oid": "68f51ef7b014775531aabe75"
+  },
+  "nombre": "Turbidez",
+  "unidad": "UNT",
+  "tipo": "Físico"
+},
+{
+  "_id": {
+    "$oid": "68f51ef7b014775531aabe76"
+  },
+  "nombre": "Sólidos Disueltos Totales (TDS)",
+  "unidad": "ppm",
+  "tipo": "Físico"
+},
+{
+  "_id": {
+    "$oid": "68f51ef7b014775531aabe77"
+  },
+  "nombre": "Sólidos Suspendidos Totales (SST)",
+  "unidad": "mg/l",
+  "tipo": "Físico"
+},
+{
+  "_id": {
+    "$oid": "68f51ef7b014775531aabe78"
+  },
+  "nombre": "Sabor",
+  "unidad": "TO",
+  "tipo": "Físico"
+},
+{
+  "_id": {
+    "$oid": "68f51ef7b014775531aabe79"
+  },
+  "nombre": "Olor",
+  "unidad": "TO",
+  "tipo": "Físico"
+},
+{
+  "_id": {
+    "$oid": "68f51ef7b014775531aabe7a"
+  },
+  "nombre": "Conductividad",
+  "unidad": "µS/cm",
+  "tipo": "Físico"
+},
+{
+  "_id": {
+    "$oid": "68f51f0fb014775531aabe7c"
+  },
+  "nombre": "Coliformes Totales",
+  "unidad": "UFC/100 ml",
+  "tipo": "Microbiológico"
+},
+{
+  "_id": {
+    "$oid": "68f51f0fb014775531aabe7d"
+  },
+  "nombre": "Escherichia coli",
+  "unidad": "UFC/100 ml",
+  "tipo": "Microbiológico"
+},
+{
+  "_id": {
+    "$oid": "68f51f0fb014775531aabe7e"
+  },
+  "nombre": "Coliformes Fecales",
+  "unidad": "UFC/100 ml",
+  "tipo": "Bacteriológico"
+},
+{
+  "_id": {
+    "$oid": "68f51f0fb014775531aabe7f"
+  },
+  "nombre": "Enterococos Intestinales",
+  "unidad": "UFC/100 ml",
+  "tipo": "Microbiológico"
+},
+{
+  "_id": {
+    "$oid": "68f51f0fb014775531aabe80"
+  },
+  "nombre": "Giardia lamblia",
+  "unidad": "Quistes/L",
+  "tipo": "Biológico"
+},
+{
+  "_id": {
+    "$oid": "68f51f0fb014775531aabe81"
+  },
+  "nombre": "Criptosporidium",
+  "unidad": "Ooquistes/L",
+  "tipo": "Biológico"
+},
+{
+  "_id": {
+    "$oid": "68f51f0fb014775531aabe82"
+  },
+  "nombre": "Algas y Cianobacterias",
+  "unidad": "Células/ml",
+  "tipo": "Biológico"
+},
+{
+  "_id": {
+    "$oid": "68f52575b014775531aabe84"
+  },
+  "nombre": "Pseudomonas Aeruginosa",
+  "unidad": "UFC/100 ml",
+  "tipo": "Bacteriológico"
+},
+{
+  "_id": {
+    "$oid": "68f52575b014775531aabe85"
+  },
+  "nombre": "Staphylococcus Aureus",
+  "unidad": "UFC/g",
+  "tipo": "Microbiológico"
+},
+{
+  "_id": {
+    "$oid": "68f52575b014775531aabe86"
+  },
+  "nombre": "Clostridium Perfringens",
+  "unidad": "UFC/100 ml",
+  "tipo": "Bacteriológico"
+},
+{
+  "_id": {
+    "$oid": "68f52575b014775531aabe87"
+  },
+  "nombre": "Salmonella sp.",
+  "unidad": "Ausencia/25 g",
+  "tipo": "Microbiológico"
+},
+{
+  "_id": {
+    "$oid": "68f52575b014775531aabe88"
+  },
+  "nombre": "Listeria Monocytogenes",
+  "unidad": "Ausencia/25 g",
+  "tipo": "Microbiológico"
+},
+{
+  "_id": {
+    "$oid": "68f52575b014775531aabe89"
+  },
+  "nombre": "Recuento total de aerobios",
+  "unidad": "UFC/ml",
+  "tipo": "Bacteriológico"
+}]

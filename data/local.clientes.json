@@ -1,0 +1,49 @@
+[{
+  "_id": {
+    "$oid": "68fc0dbe643a455cd1d38409"
+  },
+  "DNI_Razón_Social": "20-35489762-5",
+  "apellido": "Gómez",
+  "teléfono": "+5493512345678",
+  "mail": "martin.gomez@ejemplo.com"
+},
+{
+  "_id": {
+    "$oid": "68fc0ddf643a455cd1d3840b"
+  },
+  "DNI_Razón_Social": "30-12345678-0",
+  "nombre": "Ana",
+  "apellido": "Rodríguez",
+  "teléfono": "+5493519876543",
+  "mail": "ana.rodriguez@mail.com"
+},
+{
+  "_id": {
+    "$oid": "68fc0ddf643a455cd1d3840c"
+  },
+  "DNI_Razón_Social": "30-65432109-8",
+  "nombre": "Laboratorio Central S.A.",
+  "apellido": null,
+  "teléfono": "+541155551000",
+  "mail": "contacto@labcentral.com.ar"
+},
+{
+  "_id": {
+    "$oid": "68fc0ddf643a455cd1d3840d"
+  },
+  "DNI_Razón_Social": "27-87654321-4",
+  "nombre": "Carlos",
+  "apellido": "Pérez",
+  "teléfono": "+543584000100",
+  "mail": "carlos.perez@otrodom.com"
+},
+{
+  "_id": {
+    "$oid": "68fc0ddf643a455cd1d3840e"
+  },
+  "DNI_Razón_Social": "33-99887766-1",
+  "nombre": "Desarrollos Ambientales SRL",
+  "apellido": null,
+  "teléfono": "+543547890987",
+  "mail": "admin@desarrollosamb.com"
+}]

@@ -25,8 +25,6 @@ const PlantillasSchema = new mongoose.Schema({
       required: true
     }
   }]
-}, {
-  timestamps: true // Agrega createdAt y updatedAt automáticamente
 });
 
 // mongoose.model('Plantillas(model)', PlantillasSchema, 'plantillas(tabla)')
