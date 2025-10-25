@@ -3,6 +3,8 @@ import { Home } from './pages/home/home';
 import { NewRequest } from './pages/new-request/new-request';
 import { EditRequest } from './pages/edit-request/edit-request';
 import { PullRequest } from './pages/pull-request/pull-request';
+import { RegistroIngresos } from './pages/registro-ingresos/registro-ingresos';
+import { SolicitudAnalisis } from './pages/solicitud-analisis/solicitud-analisis';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // ← Ruta por defecto
@@ -10,4 +12,6 @@ export const routes: Routes = [
   { path: 'new-request', component: NewRequest },
   { path: 'edit-request', component: EditRequest },
   { path: 'pull-request', component: PullRequest },
+  { path: 'registro-ingresos', component: RegistroIngresos },
+  { path: 'solicitud-analisis', component: SolicitudAnalisis },
 ];

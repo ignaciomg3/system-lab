@@ -1,0 +1,113 @@
+<div class="solicitud-analisis-form">
+  <div class="header">
+    <h2>Solicitud de Análisis</h2>
+    <div class="header-right">
+      <label for="fechaHoy">Fecha</label>
+      <input id="fechaHoy" type="date" [value]="todayString" disabled readonly />
+    </div>
+  </div>
+
+  <form (ngSubmit)="enviarSolicitud()" #f="ngForm" novalidate>
+
+    <!-- ID (Ingreso) -->
+    <div class="form-row">
+      <label for="ingreso">ID (Registro de Ingresos)</label>
+      <select id="ingreso" name="ingreso" [(ngModel)]="solicitud.ingresoId" (change)="onIngresoChange()" required>
+        <option [ngValue]="null">-- Seleccionar ingreso (ID) --</option>
+        <option *ngFor="let ing of ingresos" [ngValue]="ing.id">
+          {{ ing.id }}{{ ing.fecha ? ' — ' + ing.fecha : '' }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Nombre (solicitante) -->
+    <div class="form-row">
+      <label for="empresa">Nombre (Solicitante)</label>
+      <select id="empresa" name="empresa" [(ngModel)]="solicitud.empresaId" (change)="onEmpresaChange()" required>
+        <option [ngValue]="null">-- Seleccionar solicitante --</option>
+        <option *ngFor="let c of companies" [ngValue]="c.id">{{ c.nombre }}</option>
+      </select>
+    </div>
+
+    <!-- CUIT -->
+    <div class="form-row">
+      <label for="cuit">CUIT</label>
+      <input id="cuit" name="cuit" type="text" [(ngModel)]="solicitud.cuit" readonly />
+    </div>
+
+    <!-- Responsable -->
+    <div class="form-row">
+      <label for="responsable">Responsable</label>
+      <input id="responsable" name="responsable" type="text" [(ngModel)]="solicitud.responsable" />
+    </div>
+
+    <!-- Fecha de Recepción (fija desde Ingreso) -->
+    <div class="form-row">
+      <label for="fechaRecepcion">Fecha de recepción</label>
+      <input id="fechaRecepcion" name="fechaRecepcion" type="date" [(ngModel)]="solicitud.fechaRecepcion" readonly disabled />
+    </div>
+
+    <!-- Extraída por -->
+    <div class="form-row">
+      <label for="extraidaPor">Extraída por</label>
+      <select id="extraidaPor" name="extraidaPor" [(ngModel)]="solicitud.extraidaPor">
+        <option value="CI">CI</option>
+        <option value="Solicitante">Solicitante</option>
+      </select>
+    </div>
+
+    <!-- Fecha prevista para informar -->
+    <div class="form-row">
+      <label for="fechaPrevista">Fecha prevista para informar</label>
+      <input id="fechaPrevista" name="fechaPrevista" type="date" [(ngModel)]="solicitud.fechaPrevistaInforme" />
+    </div>
+
+    <hr />
+
+    <!-- Muestras (igual que en cotización) -->
+    <div class="muestras-section">
+      <h3>Muestras y Análisis solicitados</h3>
+
+      <div class="muestra-card" *ngFor="let sample of solicitud.muestras; let i = index">
+        <div class="muestra-header">
+          <strong>Muestra {{ i + 1 }}</strong>
+          <div class="muestra-actions">
+            <button type="button" class="btn-link" (click)="removeSample(i)" [disabled]="solicitud.muestras.length === 1">Eliminar</button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="tipo-{{i}}">Muestra de</label>
+          <select id="tipo-{{i}}" name="tipo-{{i}}" [(ngModel)]="solicitud.muestras[i].tipo" (change)="onSampleTypeChange(i)">
+            <option [ngValue]="null">-- Seleccionar tipo --</option>
+            <option *ngFor="let t of sampleTypes" [value]="t">{{ t }}</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label>Análisis disponibles</label>
+          <div class="analisis-list">
+            <div *ngFor="let analisis of availableAnalysesFor(solicitud.muestras[i].tipo)">
+              <input type="checkbox"
+                     [id]="'chk-' + i + '-' + analisis"
+                     (change)="toggleSampleAnalysis(i, analisis, $event)"
+                     [checked]="solicitud.muestras[i].analisisSeleccionados.includes(analisis)" />
+              <label [for]="'chk-' + i + '-' + analisis">{{ analisis }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="muestras-add">
+        <button type="button" class="btn-primary" (click)="addSample()">Agregar muestra</button>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="form-actions">
+      <button type="submit" class="btn-submit" [disabled]="loading">Enviar solicitud</button>
+      <button routerLink="/home" type="button" class="btn-secondary">Volver</button>
+    </div>
+  </form>
+</div>

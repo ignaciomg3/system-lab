@@ -1,71 +1,44 @@
 <header class="header">
   <nav class="navbar">
     <div class="nav-container">
-      <!-- Logo -->
-      <div class="nav-logo">
-        <a routerLink="/home" (click)="closeMenu()">
-          <span class="logo-text">Front Lab</span>
+
+      <!-- Left: brand text -->
+      <div class="nav-left">
+        <a routerLink="/home" class="brand-link" (click)="closeMenu()">
+          <span class="brand-text">Consultores Industriales S.A.S</span>
         </a>
       </div>
 
-      <!-- Desktop Menu -->
-      <div class="nav-menu">
-        <a routerLink="/home" 
-           routerLinkActive="active" 
-           class="nav-link">
-          Inicio
-        </a>
-        <a routerLink="/new-request" 
-           routerLinkActive="active" 
-           class="nav-link">
-          Nueva Cotización
-        </a>
-        <a routerLink="/edit-request" 
-           routerLinkActive="active" 
-           class="nav-link">
-          Registro de ingresos
-        </a>
-        <a routerLink="/pull-request" 
-           routerLinkActive="active" 
-           class="nav-link">
-          Solicitud de Análisis
-        </a>
+      <!-- Center: desktop menu -->
+      <div class="nav-center">
+        <a routerLink="/home" routerLinkActive="active" class="nav-link">Inicio</a>
+        <a routerLink="/new-request" routerLinkActive="active" class="nav-link">Nueva Cotización</a>
+        <a routerLink="/registro-ingresos" routerLinkActive="active" class="nav-link">Registro de ingresos</a>
+        <a routerLink="/solicitud-analisis" routerLinkActive="active" class="nav-link">Solicitud de Análisis</a>
       </div>
 
-      <!-- Mobile Menu Toggle -->
-      <div class="nav-toggle" (click)="toggleMenu()">
-        <span class="bar" [class.active]="isMenuOpen"></span>
-        <span class="bar" [class.active]="isMenuOpen"></span>
-        <span class="bar" [class.active]="isMenuOpen"></span>
+      <!-- Right: logo (clickable) and mobile toggle -->
+      <div class="nav-right">
+        <a routerLink="/home" class="logo-link" (click)="closeMenu()" title="Ir al inicio">
+          <!-- Ruta: assets/logo-ci.jpeg (igual que en tu proyecto) -->
+          <img src="/logo-ci.jpeg" alt="Front Lab logo" class="site-logo" />
+        </a>
+
+        <button class="nav-toggle" (click)="toggleMenu()" aria-label="Abrir menú">
+          <span class="bar" [class.active]="isMenuOpen"></span>
+          <span class="bar" [class.active]="isMenuOpen"></span>
+          <span class="bar" [class.active]="isMenuOpen"></span>
+        </button>
       </div>
+
     </div>
 
     <!-- Mobile Menu -->
     <div class="nav-menu-mobile" [class.active]="isMenuOpen">
-      <a routerLink="/home" 
-         routerLinkActive="active" 
-         class="nav-link-mobile"
-         (click)="closeMenu()">
-        🏠 Inicio
-      </a>
-      <a routerLink="/new-request" 
-         routerLinkActive="active" 
-         class="nav-link-mobile"
-         (click)="closeMenu()">
-        ➕ Nueva Solicitud
-      </a>
-      <a routerLink="/edit-request" 
-         routerLinkActive="active" 
-         class="nav-link-mobile"
-         (click)="closeMenu()">
-        ✏️ Editar Solicitud
-      </a>
-      <a routerLink="/pull-request" 
-         routerLinkActive="active" 
-         class="nav-link-mobile"
-         (click)="closeMenu()">
-        🔄 Pull Requests
-      </a>
+      <a routerLink="/home" routerLinkActive="active" class="nav-link-mobile" (click)="closeMenu()">Inicio</a>
+      <a routerLink="/new-request" routerLinkActive="active" class="nav-link-mobile" (click)="closeMenu()">Nueva Cotización</a>
+      <a routerLink="/registro-ingresos" routerLinkActive="active" class="nav-link-mobile" (click)="closeMenu()">Registro de ingresos</a>
+      <a routerLink="/solicitud-analisis" routerLinkActive="active" class="nav-link-mobile" (click)="closeMenu()">Solicitud de Análisis</a>
     </div>
   </nav>
 </header>

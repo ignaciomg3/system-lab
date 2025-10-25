@@ -1,148 +1,144 @@
+/* Header básico */
 .header {
-  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-  box-shadow: 0 4px 6px rgba(30, 58, 138, 0.15);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  width: 100%;
+  background: #fff;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  position: relative;
+  z-index: 40;
 }
 
 .navbar {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 10px 20px;
 }
 
 .nav-container {
   display: flex;
+  align-items: center;
+  gap: 16px;
   justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.5rem;
 }
 
-.nav-logo .logo-text {
-  font-size: 1.8rem;
+/* Left / brand */
+.nav-left .brand-link {
+  text-decoration: none;
+  color: #0b5d3b;
   font-weight: 700;
-  color: white;
-  text-decoration: none;
-  letter-spacing: -0.5px;
-}
-
-.nav-logo a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.nav-menu {
-  display: flex;
-  gap: 0.5rem;
+  font-size: 1.05rem;
+  display: inline-flex;
   align-items: center;
+  gap: 8px;
+}
+.brand-text {
+  line-height: 1;
 }
 
+/* Center / desktop menu */
+.nav-center {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+}
 .nav-link {
-  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
-  padding: 0.75rem 1.25rem;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  font-weight: 500;
-  font-size: 0.95rem;
-  border: 2px solid transparent;
+  color: #1b2b3a;
+  font-weight: 600;
+  padding: 8px 10px;
+  border-radius: 6px;
 }
-
+.nav-link.active,
 .nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-  transform: translateY(-1px);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(31,111,235,0.06);
+  color: #1f6feb;
 }
 
-.nav-link.active {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
-  border-color: rgba(255, 255, 255, 0.3);
+/* Right: logo + toggle */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
+/* Logo visible y en el flujo */
+.logo-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+.site-logo {
+  display: block;
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+  user-select: none;
+  border-radius: 6px;
+  background: transparent;
+}
+
+/* Si quieres añadir borde/margen al logo:
+.site-logo { padding: 2px; background: #fff; border: 1px solid #eee; }
+*/
+
+/* Mobile toggle button */
 .nav-toggle {
   display: none;
-  flex-direction: column;
+  background: transparent;
+  border: none;
+  padding: 6px;
   cursor: pointer;
-  gap: 4px;
-  padding: 4px;
+}
+.nav-toggle .bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #333;
+  margin: 3px 0;
+  transition: transform 0.22s, opacity 0.22s;
 }
 
-.bar {
-  width: 25px;
-  height: 3px;
-  background-color: white;
-  transition: 0.3s;
-  border-radius: 3px;
-}
-
-.bar.active:nth-child(1) {
-  transform: rotate(-45deg) translate(-5px, 6px);
-}
-
-.bar.active:nth-child(2) {
-  opacity: 0;
-}
-
-.bar.active:nth-child(3) {
-  transform: rotate(45deg) translate(-5px, -6px);
-}
-
-/* Menú mobile oculto por defecto */
+/* Mobile menu (hidden by default) */
 .nav-menu-mobile {
   display: none;
-  position: absolute;
-  left: 0;
-  top: 100%;
   flex-direction: column;
-  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-  width: 100%;
-  box-shadow: 0 4px 6px rgba(30, 58, 138, 0.15);
+  background: #fff;
+  border-top: 1px solid rgba(0,0,0,0.05);
+  padding: 10px 20px;
 }
-
+.nav-menu-mobile.active {
+  display: flex;
+}
 .nav-link-mobile {
-  color: rgba(255, 255, 255, 0.9);
-  padding: 1rem 1.5rem;
-  display: block;
   text-decoration: none;
-  transition: all 0.3s ease;
-  border-left: 4px solid transparent;
+  color: #1b2b3a;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.03);
 }
 
-.nav-link-mobile:hover,
-.nav-link-mobile.active {
-  background-color: rgba(255, 255, 255, 0.15);
-  color: white;
-  border-left-color: white;
-}
-
-/* Responsive */
-@media screen and (max-width: 768px) {
-  .nav-menu {
-    display: none;
+/* Responsive adjustments */
+@media (max-width: 920px) {
+  .nav-center {
+    display: none; /* ocultar menú de escritorio en pantallas pequeñas */
   }
-  
   .nav-toggle {
-    display: flex;
+    display: inline-flex;
   }
-
-  .nav-menu-mobile {
-    display: flex;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-  }
-
-  .nav-menu-mobile.active {
-    transform: translateX(0);
+  .site-logo {
+    height: 44px;
   }
 }
 
-@media screen and (max-width: 480px) {
-  .nav-container {
-    padding: 1rem;
+@media (max-width: 420px) {
+  .site-logo {
+    height: 36px; /* reducir logo en móviles */
   }
-  
-  .nav-logo .logo-text {
-    font-size: 1.5rem;
+  .navbar {
+    padding: 8px 12px;
   }
 }
+
+/* Debug helper (opcional): mostrar borde alrededor del contenedor del logo
+.logo-link { outline: 1px dashed rgba(0,0,0,0.05); }
+*/

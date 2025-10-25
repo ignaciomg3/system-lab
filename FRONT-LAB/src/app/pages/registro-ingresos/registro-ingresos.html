@@ -1,0 +1,52 @@
+<div class="registro-ingresos-form">
+  <div class="header">
+    <h2>Registro de Ingresos</h2>
+    <div class="header-right">
+      <label for="fecha">Fecha</label>
+      <input id="fecha" type="date" [(ngModel)]="request.fecha" name="fecha" disabled readonly />
+    </div>
+  </div>
+
+  <form (ngSubmit)="saveIngreso()" #f="ngForm" novalidate>
+
+    <!-- Cotización / ID -->
+    <div class="form-row">
+      <label for="cotizacion">ID (Cotización)</label>
+      <select id="cotizacion" name="cotizacion" [(ngModel)]="request.cotizacionId" (change)="onCotizacionChange()" required>
+        <option [ngValue]="null">-- Seleccionar cotización --</option>
+        <option *ngFor="let c of cotizaciones" [ngValue]="c.id">
+          {{ c.id }}{{ c.referencia ? ' — ' + c.referencia : '' }}{{ c.fecha ? ' (' + c.fecha + ')' : '' }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Empresa -->
+    <div class="form-row">
+      <label for="empresa">Nombre de la empresa</label>
+      <select id="empresa" name="empresa" [(ngModel)]="request.empresaId" required>
+        <option [ngValue]="null">-- Seleccionar empresa --</option>
+        <option *ngFor="let e of companies" [ngValue]="e.id">{{ e.nombre }}</option>
+      </select>
+    </div>
+
+    <!-- Tipo de muestra -->
+    <div class="form-row">
+      <label for="tipo">Tipo de muestra</label>
+      <select id="tipo" name="tipo" [(ngModel)]="request.tipoMuestra" required>
+        <option [ngValue]="null">-- Seleccionar tipo de muestra --</option>
+        <option *ngFor="let t of sampleTypes" [value]="t">{{ t }}</option>
+      </select>
+    </div>
+
+    <!-- Cantidad -->
+    <div class="form-row">
+      <label for="cantidad">Cantidad</label>
+      <input id="cantidad" name="cantidad" type="number" min="1" [(ngModel)]="request.cantidad" required />
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="loading" class="btn-save">Guardar</button>
+      <button routerLink="/home" type="button" class="btn-cancel">Volver</button>
+    </div>
+  </form>
+</div>
