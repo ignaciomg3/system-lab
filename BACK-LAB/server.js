@@ -5,28 +5,51 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 require('dotenv').config();
 
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Configurar CORS ANTES de otras configuraciones
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:4200',  // Angular
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:4200'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true
+}));
+
+// Middleware
+app.use(helmet({
+  crossOriginEmbedderPolicy: false,  // ← Agregar esto para Swagger
+  contentSecurityPolicy: false      // ← Agregar esto para Swagger
+}));
+app.use(morgan('combined'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+
+
 // Importar configuración de Swagger
 const { specs, swaggerUi, swaggerOptions } = require('./config/swagger');
 
 // Importar rutas
-const userRoutes       = require('./routes/users');
+
 const analisisRoutes   = require('./routes/analisis');
 const muestrasRoutes   = require('./routes/muestras');
 const authRoutes       = require('./routes/auth');
 const elementosRoutes  = require('./routes/elementos'); 
 const parametrosRoutes = require('./routes/parametros');
 const plantillasRoutes = require('./routes/plantillas'); // ← AGREGAR ESTA LÍNEA
-const clientesRoutes = require('./routes/clientes');
+const clientesRoutes   = require('./routes/clientes');
+const usersRoutes      = require('./routes/users');
 
-const app = express();
-const PORT = process.env.PORT || 3000;
 
-// Middlewares
-app.use(helmet()); // Seguridad
-app.use(cors()); // Permitir conexiones cross-origin
-app.use(morgan('combined')); // Logging
-app.use(express.json()); // Parsear JSON
-app.use(express.urlencoded({ extended: true })); // Parsear URL-encoded
+
 
 // Conectar a MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
@@ -56,7 +79,10 @@ app.get('/', (req, res) => {
       'elementos',
       'parametros',
       'plantillas',
-      'clientes'
+      'clientes',
+      'Usuarios',
+      'auth'
+      
     ]
   });
 });
@@ -65,8 +91,8 @@ app.get('/', (req, res) => {
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, swaggerOptions));
 
 // Rutas de la API
-app.use('/api', authRoutes); // Login
-app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes); // Login
+app.use('/api/users', usersRoutes);
 app.use('/api/analisis', analisisRoutes);
 app.use('/api/muestras', muestrasRoutes);
 app.use('/api/elementos', elementosRoutes);

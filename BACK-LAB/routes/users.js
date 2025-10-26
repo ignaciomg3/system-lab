@@ -1,43 +1,8 @@
 const express = require('express');
-const User = require('../models/User');
+const User = require('../models/Users');
 const router = express.Router();
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     User:
- *       type: object
- *       required:
- *         - username
- *         - password
- *         - role
- *         - email
- *       properties:
- *         username:
- *           type: string
- *           description: Nombre de usuario único
- *           example: "admin"
- *         password:
- *           type: string
- *           description: Contraseña del usuario
- *           example: "admin123"
- *         role:
- *           type: string
- *           enum: [admin, usuario, tecnico, supervisor]
- *           description: Rol del usuario en el sistema
- *           example: "admin"
- *         email:
- *           type: string
- *           format: email
- *           description: Email del usuario
- *           example: "admin@laboratorio.com"
- *         activo:
- *           type: boolean
- *           description: Estado del usuario
- *           example: true
- */
-
+/****************************** GET ************************ */
 /**
  * @swagger
  * /api/users:
@@ -46,11 +11,11 @@ const router = express.Router();
  *     tags: [Usuarios]
  *     parameters:
  *       - in: query
- *         name: username
+ *         name: usuario
  *         schema:
  *           type: string
  *         description: Filtrar por nombre de usuario
- *         example: "admin"
+ *         example: "admin.lab"
  *       - in: query
  *         name: activo
  *         schema:
@@ -72,23 +37,22 @@ const router = express.Router();
  *                 data:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/User'
+ *                     $ref: '#/components/schemas/Users'
  */
 router.get('/', async (req, res) => {
   try {
-    const { username, activo } = req.query;
+    const { usuario, activo } = req.query;
     let filter = {};
 
-    // Por defecto, solo mostrar usuarios activos
     if (activo !== undefined) {
       filter.activo = activo === 'true';
     } else {
       filter.activo = true;
     }
 
-    if (username) filter.username = username;
+    if (usuario) filter.usuario = usuario;
 
-    const users = await User.find(filter).select('-password'); // No mostrar contraseñas
+    const users = await User.find(filter).select('-password');
     res.json({
       success: true,
       count: users.length,
@@ -105,41 +69,32 @@ router.get('/', async (req, res) => {
 
 /**
  * @swagger
- * /api/users/{username}:
+ * /api/users/{usuario}:
  *   get:
  *     summary: Obtener un usuario por nombre de usuario
  *     tags: [Usuarios]
  *     parameters:
  *       - in: path
- *         name: username
+ *         name: usuario
  *         required: true
  *         schema:
  *           type: string
  *         description: Nombre de usuario
- *         example: "admin"
+ *         example: "admin.lab"
  *     responses:
  *       200:
  *         description: Usuario encontrado
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                 data:
- *                   $ref: '#/components/schemas/User'
  *       404:
  *         description: Usuario no encontrado
  */
-router.get('/:username', async (req, res) => {
+router.get('/:usuario', async (req, res) => {
   try {
-    const user = await User.findOne({ username: req.params.username }).select('-password');
+    const user = await User.findOne({ usuario: req.params.usuario }).select('-password');
     
     if (!user) {
       return res.status(404).json({
         success: false,
-        error: `Usuario '${req.params.username}' no encontrado`
+        error: `Usuario '${req.params.usuario}' no encontrado`
       });
     }
 
@@ -156,6 +111,7 @@ router.get('/:username', async (req, res) => {
   }
 });
 
+/****************************** POST ************************ */
 /**
  * @swagger
  * /api/users:
@@ -167,15 +123,66 @@ router.get('/:username', async (req, res) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             type: object
+ *             required:
+ *               - usuario
+ *               - password
+ *               - rol
+ *             properties:
+ *               usuario:
+ *                 type: string
+ *                 description: Nombre de usuario único
+ *                 example: "admin.lab"
+ *               password:
+ *                 type: string
+ *                 description: Contraseña del usuario
+ *                 example: "password_admin_secreta"
+ *               rol:
+ *                 type: string
+ *                 enum: [admin, usuario, tecnico, supervisor]
+ *                 description: Rol del usuario
+ *                 example: "admin"
+ *               activo:
+ *                 type: boolean
+ *                 description: Estado del usuario
+ *                 example: true
+ *             
+ *           example:
+ *             usuario: "admin"
+ *             password: "password_admin_secreta"
+ *             rol: "admin"
+ *             activo: true
  *     responses:
  *       201:
  *         description: Usuario creado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   $ref: '#/components/schemas/Users'
  *       400:
  *         description: Error de validación
+ *       500:
+ *         description: Error interno del servidor
  */
 router.post('/', async (req, res) => {
   try {
+    // Validar campos requeridos
+    const { usuario, password, rol } = req.body;
+    
+    if (!usuario || !password || !rol) {
+      return res.status(400).json({
+        success: false,
+        error: 'Los campos usuario, password y rol son requeridos'
+      });
+    }
+
     const user = new User(req.body);
     const savedUser = await user.save();
     
@@ -186,7 +193,6 @@ router.post('/', async (req, res) => {
     });
   } catch (error) {
     if (error.code === 11000) {
-      // Determinar qué campo causó el error de duplicación
       const field = Object.keys(error.keyPattern)[0];
       return res.status(400).json({
         success: false,
@@ -213,33 +219,47 @@ router.post('/', async (req, res) => {
 
 /**
  * @swagger
- * /api/users/{username}:
+ * /api/users/{usuario}:
  *   put:
  *     summary: Actualizar un usuario por nombre de usuario
  *     tags: [Usuarios]
  *     parameters:
  *       - in: path
- *         name: username
+ *         name: usuario
  *         required: true
  *         schema:
  *           type: string
  *         description: Nombre de usuario
+ *         example: "admin.lab"
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             type: object
+ *             properties:
+ *               password:
+ *                 type: string
+ *                 example: "nueva_password_123"
+ *               rol:
+ *                 type: string
+ *                 enum: [admin, usuario, tecnico, supervisor]
+ *                 example: "admin"
+ *               activo:
+ *                 type: boolean
+ *                 example: true
  *     responses:
  *       200:
  *         description: Usuario actualizado exitosamente
  *       404:
  *         description: Usuario no encontrado
+ *       500:
+ *         description: Error interno del servidor
  */
-router.put('/:username', async (req, res) => {
+router.put('/:usuario', async (req, res) => {
   try {
     const user = await User.findOneAndUpdate(
-      { username: req.params.username },
+      { usuario: req.params.usuario },
       req.body,
       { new: true, runValidators: true }
     ).select('-password');
@@ -247,7 +267,7 @@ router.put('/:username', async (req, res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        error: `Usuario '${req.params.username}' no encontrado`
+        error: `Usuario '${req.params.usuario}' no encontrado`
       });
     }
 
@@ -261,7 +281,7 @@ router.put('/:username', async (req, res) => {
       const validationErrors = Object.values(error.errors).map(err => err.message);
       return res.status(400).json({
         success: false,
-        error: 'Errores de validación',
+        error: 'Errores de validaciones',
         details: validationErrors
       });
     }
@@ -276,27 +296,30 @@ router.put('/:username', async (req, res) => {
 
 /**
  * @swagger
- * /api/users/{username}:
+ * /api/users/{usuario}:
  *   delete:
  *     summary: Desactivar un usuario (soft delete)
  *     tags: [Usuarios]
  *     parameters:
  *       - in: path
- *         name: username
+ *         name: usuario
  *         required: true
  *         schema:
  *           type: string
  *         description: Nombre de usuario
+ *         example: "admin.lab"
  *     responses:
  *       200:
  *         description: Usuario desactivado exitosamente
  *       404:
  *         description: Usuario no encontrado
+ *       500:
+ *         description: Error interno del servidor
  */
-router.delete('/:username', async (req, res) => {
+router.delete('/:usuario', async (req, res) => {
   try {
     const user = await User.findOneAndUpdate(
-      { username: req.params.username },
+      { usuario: req.params.usuario },
       { activo: false },
       { new: true }
     ).select('-password');
@@ -304,7 +327,7 @@ router.delete('/:username', async (req, res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        error: `Usuario '${req.params.username}' no encontrado`
+        error: `Usuario '${req.params.usuario}' no encontrado`
       });
     }
 
@@ -321,5 +344,7 @@ router.delete('/:username', async (req, res) => {
     });
   }
 });
+
+ 
 
 module.exports = router;

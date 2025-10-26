@@ -21,6 +21,7 @@ const options = {
           type: 'http',
           scheme: 'bearer',
           bearerFormat: 'JWT',
+          description: 'Token JWT para autenticación'
         },
       },
       responses: {
@@ -249,29 +250,40 @@ const options = {
             }
           }
         },
-        Users:{ 
+        Users: {
           type: 'object',
-          required: ['nombre', 'email', 'rol'],
+          required: ['usuario', 'password', 'rol'],
           properties: {
             _id: {
               type: 'string',
               description: 'ID único del usuario'
             },
-            nombre: {
+            usuario: {
               type: 'string',
-              description: 'Nombre del usuario',
-              example: 'Juan Pérez'
+              description: 'Nombre de usuario único',
+              example: 'admin.lab'
             },
-            email: {
+            password: {
               type: 'string',
-              description: 'Correo electrónico del usuario',
-              example: 'juan.perez@example.com'
+              description: 'Contraseña del usuario (hasheada)',
+              example: '$2b$10$...'
             },
             rol: {
               type: 'string',
-              description: 'Rol del usuario',
-              example: 'admin',
-              enum: ['admin', 'user']
+              enum: ['admin', 'usuario', 'tecnico', 'supervisor'],
+              description: 'Rol del usuario en el sistema',
+              example: 'admin'
+            },
+            activo: {
+              type: 'boolean',
+              description: 'Estado del usuario',
+              example: true,
+              default: true
+            },
+            fecha_creacion: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Fecha de creación del usuario'
             }
           }
         },
@@ -303,6 +315,10 @@ const options = {
         
       }
     },
+      security: [
+        { bearerAuth: []   }
+      ],
+    
     tags: [
       
       {
@@ -336,6 +352,10 @@ const options = {
       {
         name: 'Usuarios',
         description: 'Operaciones relacionadas con usuarios'
+      },
+      {        
+        name: 'Autenticación',
+        description: 'Endpoints para login, logout y gestión de autenticación'
       }
     ]
   },
@@ -359,6 +379,7 @@ const swaggerOptions = {
       return req;
     }
   },
+  //Estilos personalizados
   customCss: `
     .swagger-ui .topbar { display: none }
     .swagger-ui .info .title { color: #1f2937; }
