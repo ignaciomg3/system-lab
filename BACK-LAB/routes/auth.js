@@ -1,6 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const User = require('../models/Users');
+const Users = require('../models/Users');
 const router = express.Router();
 
 /**
@@ -29,11 +29,11 @@ const router = express.Router();
  *               usuario:
  *                 type: string
  *                 description: Nombre de usuario
- *                 example: "admin.lab"
+ *                 example: "admin"
  *               password:
  *                 type: string
  *                 description: Contraseña del usuario
- *                 example: "password_admin_secreta"
+ *                 example: "admin123"
  *     responses:
  *       200:
  *         description: Login exitoso
@@ -61,6 +61,7 @@ const router = express.Router();
  *       401:
  *         description: Credenciales inválidas
  */
+
 router.post('/login', async (req, res) => {
   try {
     const { usuario, password } = req.body;
@@ -74,7 +75,7 @@ router.post('/login', async (req, res) => {
     }
     
     // Buscar usuario
-    const user = await User.findOne({ usuario, activo: true });
+    const user = await Users.findOne({ usuario, activo: true });
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -180,7 +181,7 @@ router.get('/verify', async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
     // Buscar usuario para asegurar que sigue activo
-    const user = await User.findById(decoded.id).select('-password');
+    const user = await Users.findById(decoded.id).select('-password'); // ← CAMBIAR Users por User
     
     if (!user || !user.activo) {
       return res.status(401).json({
@@ -232,6 +233,7 @@ router.get('/verify', async (req, res) => {
  *       401:
  *         description: No autenticado
  */
+
 router.get('/perfil', async (req, res) => {
   try {
     const authHeader = req.headers['authorization'];
@@ -245,7 +247,7 @@ router.get('/perfil', async (req, res) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id).select('-password');
+    const user = await Users.findById(decoded.id).select('-password'); // ← CAMBIAR Users por User
     
     if (!user || !user.activo) {
       return res.status(401).json({

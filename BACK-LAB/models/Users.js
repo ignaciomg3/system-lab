@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema({
   rol: {  
     type: String,
     required: true,
-    enum: ['admin', 'usuario', 'tecnico', 'supervisor'],
+    enum: ['admin', 'usuario', 'tecnico', 'supervisor','analista'],
     default: 'usuario'
   },
   activo: {
@@ -57,4 +57,4 @@ UserSchema.methods.getPublicProfile = function() {
   return userObject;
 };
 
-module.exports = mongoose.model('User', UserSchema, 'users');
+module.exports = mongoose.model('Users', UserSchema, 'users');
