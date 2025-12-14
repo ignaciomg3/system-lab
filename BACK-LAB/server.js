@@ -14,8 +14,10 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     'http://localhost:4200',  // Angular
+    'http://localhost:4201',  // Angular (puerto adicional)
     'http://127.0.0.1:3000',
-    'http://127.0.0.1:4200'
+    'http://127.0.0.1:4200',
+    'http://127.0.0.1:4201'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
