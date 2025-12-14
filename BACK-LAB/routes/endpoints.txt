@@ -70,6 +70,8 @@ DELETE  http://localhost:3000/api/elementos/{nro_elemento}
 GET 
 ---
 
+# Estadisticas
+GET 
 
 Base URL: http://localhost:3000
 Documentación completa: http://localhost:3000/api-docs/
