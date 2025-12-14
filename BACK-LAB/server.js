@@ -49,7 +49,7 @@ const parametrosRoutes = require('./routes/parametros');
 const plantillasRoutes = require('./routes/plantillas'); // ← AGREGAR ESTA LÍNEA
 const clientesRoutes   = require('./routes/clientes');
 const usersRoutes      = require('./routes/users');
-
+const estadisticasRoutes = require('./routes/estadisticas');
 
 
 
@@ -76,6 +76,7 @@ app.get('/', (req, res) => {
     documentation: 'http://localhost:3000/api-docs',
     collections: [
       'users',
+      'estadisticas',
       'analisis', 
       'muestras',
       'elementos',
@@ -95,6 +96,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, swaggerOptions));
 // Rutas de la API
 app.use('/api/auth', authRoutes); // Login
 app.use('/api/users', usersRoutes);
+app.use('/api/estadisticas', estadisticasRoutes);
 app.use('/api/analisis', analisisRoutes);
 app.use('/api/muestras', muestrasRoutes);
 app.use('/api/elementos', elementosRoutes);
