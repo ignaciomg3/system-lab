@@ -11,17 +11,9 @@ const PORT = process.env.PORT || 3000;
 
 // Configurar CORS ANTES de otras configuraciones
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:4200',  // Angular
-    'http://localhost:4201',  // Angular (puerto adicional)
-    'http://127.0.0.1:3000',
-    'http://127.0.0.1:4200',
-    'http://127.0.0.1:4201'
-  ],
+  origin: '*', // Permitir cualquier origen
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  credentials: true
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
 // Middleware
@@ -41,14 +33,14 @@ const { specs, swaggerUi, swaggerOptions } = require('./config/swagger');
 
 // Importar rutas
 
-const analisisRoutes   = require('./routes/analisis');
-const muestrasRoutes   = require('./routes/muestras');
-const authRoutes       = require('./routes/auth');
-const elementosRoutes  = require('./routes/elementos'); 
+const analisisRoutes = require('./routes/analisis');
+const muestrasRoutes = require('./routes/muestras');
+const authRoutes = require('./routes/auth');
+const elementosRoutes = require('./routes/elementos');
 const parametrosRoutes = require('./routes/parametros');
 const plantillasRoutes = require('./routes/plantillas'); // ← AGREGAR ESTA LÍNEA
-const clientesRoutes   = require('./routes/clientes');
-const usersRoutes      = require('./routes/users');
+const clientesRoutes = require('./routes/clientes');
+const usersRoutes = require('./routes/users');
 const estadisticasRoutes = require('./routes/estadisticas');
 
 
@@ -58,18 +50,18 @@ mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => {
-  console.log('✅ Conectado exitosamente a MongoDB');
-  console.log('📚 Documentación de la API: http://localhost:3000/api-docs/#/');
-})
-.catch((error) => {
-  console.error('❌ Error conectando a MongoDB:', error);
-  process.exit(1);
-});
+  .then(() => {
+    console.log('✅ Conectado exitosamente a MongoDB');
+    console.log('📚 Documentación de la API: http://localhost:3000/api-docs/#/');
+  })
+  .catch((error) => {
+    console.error('❌ Error conectando a MongoDB:', error);
+    process.exit(1);
+  });
 
 // Rutas
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     message: '🚀 Servidor backend funcionando correctamente',
     version: '1.0.0',
     timestamp: new Date().toISOString(),
@@ -77,7 +69,7 @@ app.get('/', (req, res) => {
     collections: [
       'users',
       'estadisticas',
-      'analisis', 
+      'analisis',
       'muestras',
       'elementos',
       'parametros',
@@ -85,7 +77,7 @@ app.get('/', (req, res) => {
       'clientes',
       'Usuarios',
       'auth'
-      
+
     ]
   });
 });

@@ -1,0 +1,84 @@
+<div class="parametros-container">
+    <header class="page-header">
+        <h1 class="page-title">Gestión de Parámetros</h1>
+        <button class="btn-primary" (click)="openCreateModal()">
+            <span>+</span> Nuevo Parámetro
+        </button>
+    </header>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" style="text-align: center; padding: 2rem;">
+        Cargando...
+    </div>
+
+    <!-- Data Table -->
+    <div class="data-table-container" *ngIf="!isLoading">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Unidad</th>
+                    <th>Tipo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let param of parametros">
+                    <td>{{ param.nombre }}</td>
+                    <td>{{ param.unidad }}</td>
+                    <td>{{ param.tipo }}</td>
+                    <td class="actions-cell">
+                        <button class="btn-icon edit" (click)="openEditModal(param)" title="Editar">
+                            ✎
+                        </button>
+                        <button class="btn-icon delete" (click)="deleteParametro(param.nombre)" title="Eliminar">
+                            🗑️
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="parametros.length === 0">
+                    <td colspan="4" style="text-align: center; padding: 2rem;">No hay parámetros registrados.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="modal-title">{{ isEditing ? 'Editar Parámetro' : 'Nuevo Parámetro' }}</h2>
+                <button class="close-btn" (click)="closeModal()">×</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Nombre del Parámetro</label>
+                    <input type="text" [(ngModel)]="selectedParametro.nombre" class="form-input" placeholder="Ej: pH">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Unidad</label>
+                    <input type="text" [(ngModel)]="selectedParametro.unidad" class="form-input" placeholder="Ej: mg/l">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Tipo</label>
+                    <select [(ngModel)]="selectedParametro.tipo" class="form-select">
+                        <option value="" disabled>Seleccione un tipo</option>
+                        <option value="Químico">Químico</option>
+                        <option value="Físico">Físico</option>
+                        <option value="Microbiológico">Microbiológico</option>
+                        <option value="Bacteriológico">Bacteriológico</option>
+                        <option value="Biológico">Biológico</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+                    <button class="btn-save" (click)="saveParametro()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+<div class="elementos-container">
+    <header class="page-header">
+        <h1 class="page-title">Gestión de Elementos</h1>
+        <button class="btn-primary" (click)="openCreateModal()">
+            <span>+</span> Nuevo Elemento
+        </button>
+    </header>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" style="text-align: center; padding: 2rem;">
+        Cargando...
+    </div>
+
+    <!-- Data Table -->
+    <div class="data-table-container" *ngIf="!isLoading">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let elemento of elementos">
+                    <td>{{ elemento.nombre }}</td>
+                    <td>{{ elemento.descripcion }}</td>
+                    <td class="actions-cell">
+                        <button class="btn-icon edit" (click)="openEditModal(elemento)" title="Editar">
+                            ✎
+                        </button>
+                        <button class="btn-icon delete" (click)="deleteElemento(elemento.nombre)" title="Eliminar">
+                            🗑️
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="elementos.length === 0">
+                    <td colspan="3" style="text-align: center; padding: 2rem;">No hay elementos registrados.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="modal-title">{{ isEditing ? 'Editar Elemento' : 'Nuevo Elemento' }}</h2>
+                <button class="close-btn" (click)="closeModal()">×</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Nombre del Elemento</label>
+                    <input type="text" [(ngModel)]="selectedElemento.nombre" class="form-input" [disabled]="isEditing"
+                        placeholder="Ej: Agua">
+                    <small *ngIf="isEditing" style="color: #64748b; font-size: 0.8rem;">El nombre no se puede editar una
+                        vez creado.</small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Descripción</label>
+                    <input type="text" [(ngModel)]="selectedElemento.descripcion" class="form-input"
+                        placeholder="Ej: Agua Potable">
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+                    <button class="btn-save" (click)="saveElemento()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

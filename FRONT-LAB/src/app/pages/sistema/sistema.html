@@ -1,0 +1,11 @@
+<div class="sistema-container">
+    <h1 class="page-title">Sistema de Gestión</h1>
+
+    <div class="dashboard-grid">
+        <a *ngFor="let item of menuItems" [routerLink]="[item.route]" class="dashboard-card">
+            <div class="card-icon">{{ item.icon }}</div>
+            <h2 class="card-title">{{ item.title }}</h2>
+            <p class="card-description">{{ item.description }}</p>
+        </a>
+    </div>
+</div>

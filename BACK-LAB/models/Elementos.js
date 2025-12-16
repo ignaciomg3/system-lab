@@ -2,15 +2,16 @@ const mongoose = require('mongoose');
 
 // Schema para Elementos
 const ElementosSchema = new mongoose.Schema({
-  nro_elemento: {
-    type: Number,
+  nombre: {
+    type: String,
     required: true,
     unique: true
   },
-  descripcion: {
+  descripcion: { // Changed to 'descripcion' (no accent)
     type: String,
     required: true
   }
 });
 
-module.exports = mongoose.model('Elementos', ElementosSchema, 'elementos');
+// Forzamos que busque en 'elemento_analizado'
+module.exports = mongoose.model('Elementos', ElementosSchema, 'elemento_analizado');
