@@ -1,144 +1,182 @@
-/* Header básico */
+/* Header Moderno */
 .header {
   width: 100%;
-  background: #fff;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-  position: relative;
-  z-index: 40;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: var(--transition);
 }
 
 .navbar {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 10px 20px;
+  padding: 0.75rem 1.5rem;
 }
 
 .nav-container {
   display: flex;
   align-items: center;
-  gap: 16px;
   justify-content: space-between;
+  gap: 2rem;
 }
 
-/* Left / brand */
+/* Left / Brand */
 .nav-left .brand-link {
   text-decoration: none;
-  color: #0b5d3b;
+  color: var(--text-main);
   font-weight: 700;
-  font-size: 1.05rem;
-  display: inline-flex;
+  font-size: 1.25rem;
+  display: flex;
   align-items: center;
-  gap: 8px;
-}
-.brand-text {
-  line-height: 1;
+  gap: 0.75rem;
+  transition: var(--transition);
 }
 
-/* Center / desktop menu */
+.brand-link:hover {
+  color: var(--primary);
+}
+
+/* Center / Desktop Menu */
 .nav-center {
   display: flex;
-  gap: 18px;
   align-items: center;
-  flex: 1;
-  justify-content: center;
-}
-.nav-link {
-  text-decoration: none;
-  color: #1b2b3a;
-  font-weight: 600;
-  padding: 8px 10px;
-  border-radius: 6px;
-}
-.nav-link.active,
-.nav-link:hover {
-  background: rgba(31,111,235,0.06);
-  color: #1f6feb;
+  gap: 0.5rem;
+  background: rgba(241, 245, 249, 0.5);
+  padding: 0.25rem;
+  border-radius: 999px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
-/* Right: logo + toggle */
+.nav-link {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  transition: var(--transition);
+}
+
+.nav-link:hover {
+  color: var(--primary);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.nav-link.active {
+  background: white;
+  color: var(--primary);
+  box-shadow: var(--shadow-sm);
+  font-weight: 600;
+}
+
+/* Right / Logo & Actions */
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 1rem;
 }
 
-/* Logo visible y en el flujo */
 .logo-link {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  text-decoration: none;
+  transition: var(--transition);
 }
+
+.logo-link:hover {
+  transform: scale(1.05);
+}
+
 .site-logo {
-  display: block;
-  height: 52px;
+  height: 40px;
   width: auto;
-  object-fit: contain;
-  user-select: none;
-  border-radius: 6px;
-  background: transparent;
+  border-radius: 8px;
+  /* shadow for logo if needed */
+  /* box-shadow: var(--shadow-sm); */
 }
 
-/* Si quieres añadir borde/margen al logo:
-.site-logo { padding: 2px; background: #fff; border: 1px solid #eee; }
-*/
-
-/* Mobile toggle button */
+/* Mobile Toggle */
 .nav-toggle {
   display: none;
   background: transparent;
   border: none;
-  padding: 6px;
+  padding: 0.5rem;
   cursor: pointer;
-}
-.nav-toggle .bar {
-  display: block;
-  width: 22px;
-  height: 2px;
-  background: #333;
-  margin: 3px 0;
-  transition: transform 0.22s, opacity 0.22s;
+  z-index: 50;
 }
 
-/* Mobile menu (hidden by default) */
+.nav-toggle .bar {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text-main);
+  margin: 5px 0;
+  border-radius: 2px;
+  transition: var(--transition);
+}
+
+.nav-toggle:hover .bar {
+  background: var(--primary);
+}
+
+/* Mobile Menu */
 .nav-menu-mobile {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 1rem;
+  box-shadow: var(--shadow-lg);
   display: none;
   flex-direction: column;
-  background: #fff;
-  border-top: 1px solid rgba(0,0,0,0.05);
-  padding: 10px 20px;
+  gap: 0.5rem;
+  transform-origin: top;
+  animation: slideDown 0.3s ease-out;
 }
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .nav-menu-mobile.active {
   display: flex;
 }
+
 .nav-link-mobile {
   text-decoration: none;
-  color: #1b2b3a;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(0,0,0,0.03);
+  color: var(--text-main);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  transition: var(--transition);
 }
 
-/* Responsive adjustments */
-@media (max-width: 920px) {
+.nav-link-mobile:hover,
+.nav-link-mobile.active {
+  background: var(--bg-body);
+  color: var(--primary);
+  padding-left: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
   .nav-center {
-    display: none; /* ocultar menú de escritorio en pantallas pequeñas */
+    display: none;
   }
+
   .nav-toggle {
-    display: inline-flex;
-  }
-  .site-logo {
-    height: 44px;
+    display: block;
   }
 }
-
-@media (max-width: 420px) {
-  .site-logo {
-    height: 36px; /* reducir logo en móviles */
-  }
-  .navbar {
-    padding: 8px 12px;
-  }
-}
-
-/* Debug helper (opcional): mostrar borde alrededor del contenedor del logo
-.logo-link { outline: 1px dashed rgba(0,0,0,0.05); }
-*/
