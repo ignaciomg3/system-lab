@@ -18,6 +18,7 @@ export class Elementos implements OnInit {
     isModalOpen = false;
     isEditing = false;
     isLoading = false;
+    searchTerm: string = '';
 
     constructor(private elementosService: ElementosService) { }
 
@@ -34,6 +35,25 @@ export class Elementos implements OnInit {
             },
             error: (err) => {
                 console.error('Error loading elementos', err);
+                this.isLoading = false;
+            }
+        });
+    }
+
+    search() {
+        if (!this.searchTerm.trim()) {
+            this.loadElementos();
+            return;
+        }
+
+        this.isLoading = true;
+        this.elementosService.searchElementos(this.searchTerm).subscribe({
+            next: (response) => {
+                this.elementos = response.data || [];
+                this.isLoading = false;
+            },
+            error: (err) => {
+                console.error('Error searching elementos', err);
                 this.isLoading = false;
             }
         });

@@ -21,6 +21,10 @@ export class ParametrosService {
         return this.http.get<any>(this.apiUrl);
     }
 
+    searchParametros(termino: string): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/buscar/${termino}`);
+    }
+
     createParametro(parametro: Parametro): Observable<any> {
         return this.http.post<any>(this.apiUrl, parametro);
     }

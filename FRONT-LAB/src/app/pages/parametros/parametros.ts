@@ -17,6 +17,7 @@ export class Parametros implements OnInit {
     isModalOpen = false;
     isEditing = false;
     isLoading = false;
+    searchTerm: string = '';
 
     constructor(private parametrosService: ParametrosService) { }
 
@@ -34,6 +35,25 @@ export class Parametros implements OnInit {
             },
             error: (err) => {
                 console.error('Error loading parametros', err);
+                this.isLoading = false;
+            }
+        });
+    }
+
+    search() {
+        if (!this.searchTerm.trim()) {
+            this.loadParametros();
+            return;
+        }
+
+        this.isLoading = true;
+        this.parametrosService.searchParametros(this.searchTerm).subscribe({
+            next: (response) => {
+                this.parametros = response.data || [];
+                this.isLoading = false;
+            },
+            error: (err) => {
+                console.error('Error searching parametros', err);
                 this.isLoading = false;
             }
         });

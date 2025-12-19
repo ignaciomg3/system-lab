@@ -6,6 +6,13 @@
         </button>
     </header>
 
+    <!-- Search Bar -->
+    <div class="search-container" style="margin: 1rem 0; display: flex; gap: 10px; align-items: center;">
+        <input type="text" [(ngModel)]="searchTerm" (keyup.enter)="search()" (input)="search()" class="form-input"
+            placeholder="Buscar parámetro por nombre..." style="max-width: 300px;">
+        <!-- Optional: Explicit button, though (input) handles it real-time or (enter) -->
+    </div>
+
     <!-- Loading State -->
     <div *ngIf="isLoading" style="text-align: center; padding: 2rem;">
         Cargando...

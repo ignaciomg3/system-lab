@@ -20,6 +20,10 @@ export class ElementosService {
         return this.http.get<any>(this.apiUrl);
     }
 
+    searchElementos(termino: string): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/buscar/${termino}`);
+    }
+
     getElemento(nombre: string): Observable<any> {
         return this.http.get<any>(`${this.apiUrl}/${nombre}`);
     }

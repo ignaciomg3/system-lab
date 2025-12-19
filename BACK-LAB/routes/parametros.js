@@ -34,7 +34,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const parametros = await Parametros.find().sort({ nombre: 1 });
-    
+
     res.json({
       success: true,
       count: parametros.length,
@@ -75,9 +75,9 @@ router.get('/', async (req, res) => {
 router.get('/tipo/:tipo', async (req, res) => {
   try {
     const { tipo } = req.params;
-    
+
     const parametros = await Parametros.find({ tipo }).sort({ nombre: 1 });
-    
+
     if (parametros.length === 0) {
       return res.status(404).json({
         success: false,
@@ -99,46 +99,83 @@ router.get('/tipo/:tipo', async (req, res) => {
   }
 });
 
-// OBTENER PARAMETRO POR ID
+
+
+// BUSCAR PARAMETROS POR NOMBRE (PARCIAL)
 /**
  * @swagger
- * /api/parametros/{id}:
+ * /api/parametros/buscar/{termino}:
  *   get:
- *     summary: Obtiene un parámetro por su ID
+ *     summary: Buscar parámetros por nombre (parcial)
  *     tags: [Parámetros]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: termino
  *         required: true
  *         schema:
  *           type: string
- *         description: ID del parámetro
+ *         description: Término de búsqueda
+ *     responses:
+ *       200:
+ *         description: Parámetros encontrados
+ *       500:
+ *         description: Error interno del servidor
+ */
+router.get('/buscar/:termino', async (req, res) => {
+  try {
+    const { termino } = req.params;
+    const regex = new RegExp(termino, 'i'); // Búsqueda insensible a mayúsculas/minúsculas
+
+    const parametros = await Parametros.find({
+      nombre: { $regex: regex }
+    }).sort({ nombre: 1 });
+
+    res.json({
+      success: true,
+      count: parametros.length,
+      data: parametros
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Error al buscar parámetros',
+      details: error.message
+    });
+  }
+});
+
+/**
+ * @swagger
+ * /api/parametros/nombre/{nombre}:
+ *   get:
+ *     summary: Obtener parámetro por nombre
+ *     tags: [Parámetros]
+ *     parameters:
+ *       - in: path
+ *         name: nombre
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Nombre del parámetro
+ *         example: "pH"
  *     responses:
  *       200:
  *         description: Parámetro encontrado exitosamente
  *       404:
- *         description: Parámetro no encontrado
+ *         description: No se encontró el parámetro
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/:id', async (req, res) => {
+router.get('/nombre/:nombre', async (req, res) => {
   try {
-    const { id } = req.params;
-    
-    // Validar que el ID sea válido
-    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-      return res.status(400).json({
-        success: false,
-        error: 'ID de parámetro inválido'
-      });
-    }
+    const { nombre } = req.params;
 
-    const parametro = await Parametros.findById(id);
-    
+    const parametro = await Parametros.findOne({ nombre });
+
     if (!parametro) {
       return res.status(404).json({
         success: false,
-        error: 'Parámetro no encontrado'
+        error: `No se encontró el parámetro: ${nombre}`
       });
     }
 
@@ -149,11 +186,12 @@ router.get('/:id', async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: 'Error al obtener el parámetro',
+      error: 'Error al obtener el parámetro por nombre',
       details: error.message
     });
   }
 });
+
 
 /***************************** POST ***********************************/
 
@@ -198,7 +236,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const { nombre, unidad, tipo } = req.body;
-    
+
     // Validaciones básicas
     if (!nombre || !unidad || !tipo) {
       return res.status(400).json({
@@ -230,7 +268,7 @@ router.post('/', async (req, res) => {
         error: 'Ya existe un parámetro con ese nombre'
       });
     }
-    
+
     if (error.name === 'ValidationError') {
       const errores = Object.values(error.errors).map(err => err.message);
       return res.status(400).json({
@@ -298,9 +336,9 @@ router.put('/:nombre', async (req, res) => {
     const parametroActualizado = await Parametros.findOneAndUpdate(
       { nombre: nombre },
       datosActualizacion,
-      { 
-        new: true, 
-        runValidators: true 
+      {
+        new: true,
+        runValidators: true
       }
     );
 
@@ -324,7 +362,7 @@ router.put('/:nombre', async (req, res) => {
         error: 'Ya existe un parámetro con ese nombre'
       });
     }
-    
+
     if (error.name === 'ValidationError') {
       const errores = Object.values(error.errors).map(err => err.message);
       return res.status(400).json({
@@ -370,7 +408,7 @@ router.put('/:nombre', async (req, res) => {
 router.delete('/:nombre', async (req, res) => {
   try {
     const { nombre } = req.params;
-    
+
     const parametroEliminado = await Parametros.findOneAndDelete({ nombre: nombre });
 
     if (!parametroEliminado) {
