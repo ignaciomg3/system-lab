@@ -13,7 +13,7 @@ export class Sistema {
     menuItems = [
         { title: 'Análisis', icon: '🧪', route: '/analisis', description: 'Gestión de análisis disponibles' },
         { title: 'Muestras', icon: '📦', route: '/muestras', description: 'Control de muestras recibidas' },
-        { title: 'Plantillas', icon: '📝', route: '/plantillas', description: 'Configuración de plantillas de informe' },
+        { title: 'Plantillas', icon: '📝', route: '/sistema/plantillas', description: 'Configuración de plantillas de informe' },
         { title: 'Parámetros', icon: '⚙️', route: '/parametros', description: 'Definición de parámetros de análisis' },
         { title: 'Elementos', icon: '🔬', route: '/elementos', description: 'Catálogo de elementos químicos' },
         { title: 'Tipos de Análisis', icon: '📊', route: '/tipos-analisis', description: 'Categorización de servicios' },

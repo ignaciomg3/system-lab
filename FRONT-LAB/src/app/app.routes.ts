@@ -8,6 +8,7 @@ import { SolicitudAnalisis } from './pages/solicitud-analisis/solicitud-analisis
 import { Sistema } from './pages/sistema/sistema';
 import { Elementos } from './pages/elementos/elementos';
 import { Parametros } from './pages/parametros/parametros';
+import { Plantillas } from './pages/plantillas/plantillas';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // ← Ruta por defecto
@@ -20,4 +21,5 @@ export const routes: Routes = [
   { path: 'sistema', component: Sistema },
   { path: 'elementos', component: Elementos },
   { path: 'parametros', component: Parametros },
+  { path: 'sistema/plantillas', component: Plantillas },
 ];

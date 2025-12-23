@@ -1,0 +1,148 @@
+[{
+  "_id": {
+    "$oid": "68f8173241b557421a32c7b1"
+  },
+  "nombre": "Química Aguas Potabilidad",
+  "solicitante": "Aguas Cordobesas S.A.",
+  "parametros": [
+    {
+      "nombre": "pH",
+      "unidad": "unidad pH",
+      "tipo": "Químico"
+    },
+    {
+      "nombre": "Cloro Residual Libre",
+      "unidad": "mg/l",
+      "tipo": "Químico"
+    },
+    {
+      "nombre": "Dureza Total",
+      "unidad": "mg CaCO3/L",
+      "tipo": "Químico"
+    },
+    {
+      "nombre": "Turbidez",
+      "unidad": "UNT",
+      "tipo": "Físico"
+    },
+    {
+      "nombre": "Conductividad",
+      "unidad": "µS/cm",
+      "tipo": "Físico"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "68f8174f41b557421a32c7b3"
+  },
+  "nombre": "Control Efluentes Industriales",
+  "solicitante": "Empresa X S.R.L.",
+  "parametros": [
+    {
+      "nombre": "DBO5",
+      "unidad": "mg/l",
+      "tipo": "Químico"
+    },
+    {
+      "nombre": "DQO",
+      "unidad": "mg/l",
+      "tipo": "Químico"
+    },
+    {
+      "nombre": "Sólidos Suspendidos Totales (SST)",
+      "unidad": "mg/l",
+      "tipo": "Físico"
+    },
+    {
+      "nombre": "Nitratos",
+      "unidad": "mg/l",
+      "tipo": "Químico"
+    },
+    {
+      "nombre": "Temperatura",
+      "unidad": "°C",
+      "tipo": "Físico"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "68f8176241b557421a32c7b5"
+  },
+  "nombre": "Microbiológico Básico",
+  "solicitante": "Municipalidad de B° Centro",
+  "parametros": [
+    {
+      "nombre": "Escherichia coli",
+      "unidad": "UFC/100 ml",
+      "tipo": "Microbiológico"
+    },
+    {
+      "nombre": "Coliformes Totales",
+      "unidad": "UFC/100 ml",
+      "tipo": "Microbiológico"
+    },
+    {
+      "nombre": "Enterococos Intestinales",
+      "unidad": "UFC/100 ml",
+      "tipo": "Microbiológico"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "68f8254e0cd6db1acbd970d1"
+  },
+  "nombre": "Microbiológico Básico 2",
+  "solicitante": "Municipalidad de B° Centro",
+  "parametros": [
+    {
+      "nombre": "Escherichia coli",
+      "unidad": "UFC/100 ml",
+      "tipo": "Microbiológico",
+      "_id": {
+        "$oid": "68f8254e0cd6db1acbd970d2"
+      }
+    },
+    {
+      "nombre": "Escherichia coli",
+      "unidad": "UFC/100 ml",
+      "tipo": "Microbiológico",
+      "_id": {
+        "$oid": "68f8254e0cd6db1acbd970d3"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-10-22T00:29:02.650Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-22T00:29:02.650Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68fc097e57a20e95d555f74a"
+  },
+  "nombre": "Plantilla de Municipalidad Biológica",
+  "solicitante": "Municipalidad de B° Centro",
+  "parametros": [
+    {
+      "nombre": "Escherichia coli",
+      "unidad": "UFC/100 ml",
+      "tipo": "Microbiológico",
+      "_id": {
+        "$oid": "68fc097e57a20e95d555f74b"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-10-24T23:19:26.596Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-24T23:19:26.596Z"
+  },
+  "__v": 0
+}]

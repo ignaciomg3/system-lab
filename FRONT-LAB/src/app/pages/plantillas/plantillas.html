@@ -1,0 +1,139 @@
+<div class="plantillas-container">
+    <header class="page-header">
+        <h1 class="page-title">📋 Gestión de Plantillas</h1>
+        <button class="btn-primary" (click)="openCreateModal()">
+            <span>+</span> Nueva Plantilla
+        </button>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <input type="text" [(ngModel)]="searchTerm" (keyup.enter)="search()" (input)="search()" class="form-input"
+            placeholder="Buscar plantilla por nombre o solicitante..." />
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state">
+        <div class="spinner"></div>
+        Cargando plantillas...
+    </div>
+
+    <!-- Data Table -->
+    <div class="data-table-container" *ngIf="!isLoading">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Solicitante</th>
+                    <th>Parámetros</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let plantilla of plantillas">
+                    <td class="nombre-cell">{{ plantilla.nombre }}</td>
+                    <td>{{ plantilla.solicitante }}</td>
+                    <td class="parametros-count">
+                        <span class="badge">{{ plantilla.parametros.length }} parámetros</span>
+                    </td>
+                    <td class="actions-cell">
+                        <button class="btn-icon view" (click)="viewDetails(plantilla)" title="Ver detalles">
+                            👁️
+                        </button>
+                        <button class="btn-icon edit" (click)="openEditModal(plantilla)" title="Editar">
+                            ✎
+                        </button>
+                        <button class="btn-icon delete" (click)="deletePlantilla(plantilla.nombre)" title="Eliminar">
+                            🗑️
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="plantillas.length === 0">
+                    <td colspan="4" class="empty-state">No hay plantillas registradas.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="modal-title">{{ isEditing ? 'Editar Plantilla' : 'Nueva Plantilla' }}</h2>
+                <button class="close-btn" (click)="closeModal()">×</button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Plantilla Basic Info -->
+                <div class="form-section">
+                    <h3 class="section-title">Información General</h3>
+
+                    <div class="form-group">
+                        <label class="form-label">Nombre de la Plantilla *</label>
+                        <input type="text" [(ngModel)]="selectedPlantilla.nombre" class="form-input"
+                            placeholder="Ej: Microbiológico Básico">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Solicitante *</label>
+                        <input type="text" [(ngModel)]="selectedPlantilla.solicitante" class="form-input"
+                            placeholder="Ej: Municipalidad de B° Centro">
+                    </div>
+                </div>
+
+                <!-- Parameters Section -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <h3 class="section-title">Parámetros</h3>
+                        <button type="button" class="btn-add-param" (click)="addParametro()">
+                            <span>+</span> Agregar Parámetro
+                        </button>
+                    </div>
+
+                    <div class="parametros-list">
+                        <div class="parametro-card" *ngFor="let param of selectedPlantilla.parametros; let i = index">
+                            <div class="parametro-header">
+                                <span class="parametro-number">Parámetro {{ i + 1 }}</span>
+                                <button type="button" class="btn-remove" (click)="removeParametro(i)"
+                                    [disabled]="selectedPlantilla.parametros.length === 1">
+                                    ×
+                                </button>
+                            </div>
+
+                            <div class="parametro-fields">
+                                <div class="form-group">
+                                    <label class="form-label">Nombre *</label>
+                                    <input type="text" [(ngModel)]="param.nombre" class="form-input"
+                                        placeholder="Ej: pH">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Unidad *</label>
+                                    <input type="text" [(ngModel)]="param.unidad" class="form-input"
+                                        placeholder="Ej: mg/l">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Tipo *</label>
+                                    <select [(ngModel)]="param.tipo" class="form-select">
+                                        <option value="">Seleccione un tipo</option>
+                                        <option *ngFor="let tipo of tiposParametros" [value]="tipo">{{ tipo }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="selectedPlantilla.parametros.length === 0" class="empty-params">
+                            No hay parámetros agregados. Haga clic en "Agregar Parámetro" para comenzar.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+                    <button class="btn-save" (click)="savePlantilla()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
