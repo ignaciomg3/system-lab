@@ -7,7 +7,7 @@ const options = {
     info: {
       title: 'API Sistema Laboratorio',
       version: '1.0.0',
-      description: 'API para gestión de análisis de laboratorio',
+      description: 'API Laboratorio de Análisis',
     },
     servers: [
       {
@@ -291,7 +291,7 @@ const options = {
           type: 'object',
           required: ['nombre', 'parametros'],
           properties: {
-            
+
             nombre: {
               type: 'string',
               description: 'Nombre de la plantilla',
@@ -312,15 +312,15 @@ const options = {
             }
           }
         }
-        
+
       }
     },
-      security: [
-        { bearerAuth: []   }
-      ],
-    
+    security: [
+      { bearerAuth: [] }
+    ],
+
     tags: [
-      
+
       {
         name: 'Análisis',
         description: 'Gestión de análisis de laboratorio'
@@ -337,7 +337,7 @@ const options = {
         name: 'Estadísticas',
         description: 'Estadísticas y reportes de análisis'
       },
-      {        
+      {
         name: 'Parámetros',
         description: 'Gestión de parámetros de análisis'
       },
@@ -353,7 +353,7 @@ const options = {
         name: 'Usuarios',
         description: 'Operaciones relacionadas con usuarios'
       },
-      {        
+      {
         name: 'Autenticación',
         description: 'Endpoints para login, logout y gestión de autenticación'
       }

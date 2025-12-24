@@ -1,7 +1,7 @@
 <div class="dashboard-container">
   <!-- Header -->
   <div class="dashboard-header">
-    <h1>📊 Dashboard - Empresa de Rami</h1>
+    <h1> Dashboard </h1>
     <p class="welcome-text">Bienvenido al panel de control</p>
   </div>
 
@@ -13,7 +13,7 @@
 
   <!-- Statistics Cards -->
   <div *ngIf="!loading && statistics" class="stats-container">
-    
+
     <!-- Metric Cards -->
     <div class="metrics-grid">
       <div class="metric-card total">
@@ -81,14 +81,8 @@
     <div class="activity-section">
       <h3>📋 Actividad Reciente</h3>
       <div class="activity-list">
-        <div 
-          *ngFor="let activity of statistics.recentActivity" 
-          class="activity-item"
-        >
-          <div 
-            class="activity-icon" 
-            [style.background-color]="getStatusColor(activity.type)"
-          >
+        <div *ngFor="let activity of statistics.recentActivity" class="activity-item">
+          <div class="activity-icon" [style.background-color]="getStatusColor(activity.type)">
             {{ getStatusIcon(activity.type) }}
           </div>
           <div class="activity-content">
